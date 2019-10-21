@@ -96,9 +96,39 @@ textarea {
 /* ==========================================================================
    Author's custom styles
    ========================================================================== */
-   *, *>* {
-    box-sizing: border-box !important;
-   }
+   /*
+
+#0863b5
+#fec600
+#f39100
+#e3001f
+#e50064
+#954a97
+#009ee3
+#13a538
+
+*/
+
+
+@font-face {
+ font-family: "ArgosGeorge";
+ src: url("../fonts/ArgosGeorge.ttf");
+}
+@font-face {
+ font-family: "ArgosGeorgeContour";
+ src: url("../fonts/ArgosGeorgeContour.ttf");
+}
+
+ *, *>* {
+  box-sizing: border-box !important;
+ }
+
+ 
+ body {
+  background-color: black;
+  font-family: "comic sans ms";
+
+ }
 ul {
     margin: 0;
     padding: 0;
@@ -109,11 +139,11 @@ ul {
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-between;
-    width: 1200px;
-    height: 800px;
+    width: 1400px;
+    height: 600px;
     margin: 0 auto;
-    background-color: grey;
-    padding: 25px;
+    background-color: #000000;
+    padding: 5px;
 }
 #pageContent > section {
     height: 100%;
@@ -122,10 +152,10 @@ ul {
 #menu {
     min-width: 350px;
     background-color: #f0f0f0;
-    margin-right: 30px;
+    margin-right: 15px;
 }
 #action {
-    width: auto;
+    width: 100%;
     background-color: #f0f0f0;
 }
 
@@ -184,31 +214,190 @@ ul#tabLabels li.one-tab-label:last-child {
     background-color: yellow;
 }
 
+.tab-content ul#participantsList {
+}
+#participantsList li.one-participant {
+  padding: 0px 6px;
+  cursor: default;
+  overflow: hidden;
+  height: 45px;
+  
+  transition: all 0.2s ease;
+}
+.one-participant.is-online {
+  
+}
+.one-participant.is-offline {
+  filter: grayscale(1);
+  opacity: 0.9;
+}
+#participantsList li.one-participant.is-online:hover {
+  /*height: 250px;*/
+  
+  overflow-y: scroll;
+}
+#participantsList li.one-participant.is-online:hover p.pseudo {
+  letter-spacing: 5px;
+}
+.one-participant div.participant {
+  position: relative;
+}
+.participant p {
+  margin: 0;
+}
+.participant p.level {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.participant p.pseudo {
+  text-align: center;
+  margin: 0;
+  line-height: 45px;
+  transition: all 0.2s ease;
+}
+.participant .details {
+}
+.participant ul.skills {
+  margin: 6px 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 
 #chatContainer {
     height: 100%;
-    padding: 0.1px;
 }
 #chatContent {
-    padding: 12px;
 }
 
 ul#chatMessages {
-    height: 500px;
+    height: 450px;
     width: 100%;
-    background-color: #04099C33;
-    padding: 6px 12px;
+    background-color: black;
+    padding: 5px 10px;
     overflow-y: scroll;
-    padding-left: 25px;
 }
 
 #chatMessages li.one-chat-message {
     margin: 4px 0px;
     border-top: 1px solid #0c0c0c29;
+    padding: 0px 7px;
 }
+li.one-chat-message.chatmsg {
+}
+
+li.one-chat-message.diceroll {
+  color: goldenrod !important;
+  box-shadow: 0 0 4px 0 deeppink inset;
+}
+
+li.one-chat-message.diceroll span.speaker-name {
+
+}
+li.one-chat-message.diceroll span.speaker-text {
+  text-indent: 50px;
+}
+
+#chatInput {
+  box-shadow: transparent 0px 0px 5px 0px inset;
+  transition: box-shadow 0.1s ease;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+.dice-name {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    bottom: 0;
+}
+#rolls-container {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-around;
+    margin-top: 24px;
+}
+
+.one-roll-container {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    color: whitesmoke;
+    background-color: #000000;
+    box-shadow: 4px 4px 4px 1px rgba(0,0,0,0.5);
+    border-radius: 7px;
+    font-family: 'ArgosGeorge' !important;
+    transition: all 0.2s ease;
+}
+
+.one-roll-container:hover {
+    box-shadow: 1px 1px 12px 2px rgba(0,0,0,0.5);
+}
+
+
+.one-roll-container p {
+    margin: 0px;
+    line-height: 45px;
+    text-align: center;
+    font-size: 40px;
+    font-family: 'ArgosGeorge' !important;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
 
 
 
