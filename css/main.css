@@ -265,7 +265,11 @@ ul#tabLabels li.one-tab-label:last-child {
 
 
 
-
+#noteInput {
+  background-color: lightblue;
+  width: 90%;
+  height: 500px;
+}
 
 
 

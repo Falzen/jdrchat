@@ -7,12 +7,23 @@ if(isset($_REQUEST["action"]) && !empty($_REQUEST["action"])) {
     switch($action) {
 
         case "getMessagesByGameId" :
-        if(isset($_REQUEST["gameid"]) && !empty($_REQUEST["gameid"])) {
-            $gameid = $_REQUEST["gameid"];
-            getMessagesByGameId($gameid);
-        } else {
-            echo "ERROR messagesManager.php getMessagesByGameId(gameid) : gameid not received";
-        }
+                if(isset($_REQUEST["gameid"]) && !empty($_REQUEST["gameid"])) {
+                    $gameid = $_REQUEST["gameid"];
+                    getMessagesByGameId($gameid);
+                } else {
+                    echo "ERROR messagesManager.php getMessagesByGameId(gameid) : gameid not received";
+                }
+        break;
+
+        case "getNotesByGameIdAndPlayerId" :
+                if(isset($_REQUEST["playerid"]) && !empty($_REQUEST["playerid"])
+                    && isset($_REQUEST["gameid"]) && !empty($_REQUEST["gameid"])) {
+                    $playerid = $_REQUEST["playerid"];
+                    $gameid = $_REQUEST["gameid"];
+                    getNotesByGameIdAndPlayerId($gameid, $playerid);
+                } else {
+                    echo "ERROR messagesManager.php getNotesByGameIdAndPlayerId($gameid, $playerid) : something not received";
+                }
         break;
 
         default:
@@ -61,6 +72,35 @@ function getMessagesByGameId($gameid) {
 
     $db = null;
     echo json_encode($allMessages);
+}
+
+
+function getNotesByGameIdAndPlayerId($gameid, $playerid) {
+    $query = "SELECT id,";
+        $query .= " html_content,";
+        $query .= " player_id,";
+        $query .= " game_id";
+    $query .= " FROM";
+        $query .= " player_notes"; 
+    $query .= " WHERE";
+        $query .= " player_id = ?";
+        $query .= " AND game_id = ?";
+
+
+    $stmt = $db->prepare($query);
+    $stmt->bindParam(1, $playerid);
+    $stmt->bindParam(2, $gameid);
+    $stmt->execute();
+
+    while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+        $thePlayerNotes = (object) [
+            'html_content' => $row['html_content']
+        ];
+    }
+
+    $db = null;
+    echo json_encode($thePlayerNotes);
+
 }
 
 ?>

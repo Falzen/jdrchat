@@ -39,16 +39,16 @@
           <div class="one-tab-window is-selected" id="tab-players">
             <div class="tab-content">
               <ul id="participantsList">
-                
               </ul>
-              
             </div>
           </div>
           <div class="one-tab-window" id="tab-inventory">
             <div class="tab-content"></div>
           </div>
           <div class="one-tab-window" id="tab-notes">
-            <div class="tab-content"></div>
+            <div class="tab-content">
+              <div id="noteInput" contenteditable="true"></div>
+            </div>
           </div>
         </div>
       </div>

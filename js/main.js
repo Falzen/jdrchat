@@ -3,6 +3,7 @@ const $chatSend = $('#chatSend');
 const $chatMessages = $('#chatMessages');
 const $gamesList = $('#gamesList');
 const $participantsList = $('#participantsList');
+const $noteInput = $('#noteInput');
 var CURRENT_PLAYER;
 //const CHAT_COLORS = ['#697196','#966988','#968E69','#699677'];
 const CHAT_COLORS = ['#e50064','#954a97','#009ee3','#13a538','#0863b5','#fec600','#f39100','#e3001f'];
@@ -230,10 +231,43 @@ function setEventListeners() {
 			}
 		};
 		writeChatMessage(diceRollMsgObj);
+	})
+	.on('blur', '#noteInput', function(ev) {
+		updateNoteInput();
+	});
 
+	
+}
+
+function getNotesByGameIdAndPlayerId(gid, pid) {
+$.ajax({
+		type: 'GET',
+		url: 'php/gamesManager.php',
+		data: {
+			action: 'getAvailableGames',
+			playerid: pid,
+			gameid: gid
+		},
+		success: function (resultat, statut, erreur) {
+			playerNotes = JSON.parse(resultat);
+			setPlayerNotes(playerNotes);
+		},
+		error: function(resultat, statut, erreur) {
+			console.log('getGames JS -> error');
+			console.log('resultat : ', resultat);
+			console.log('statut : ', statut);
+			console.log('erreur : ', erreur);
+		}
 	});
 }
 
+
+function setPlayerNotes(htmlContent) {
+	$noteInput.html(htmlContent);
+}
+function updateNoteInput() {
+	alert($noteInput.html());
+}
 function makeDiceRollMsg(res, dice) {
 		var msg = 'd'+dice+'&nbsp;&nbsp; -->  &nbsp;&nbsp;\''+res+'\'';
 	switch(dice) {
@@ -267,6 +301,7 @@ function init() {
 	getGames();
 	chosenGameId = 1;
 	getMessagesByGameId(chosenGameId);
+	getNotesByGameIdAndPlayerId(chosenGameId, CURRENT_PLAYER.id);
 }
 
 
