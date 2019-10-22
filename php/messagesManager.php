@@ -26,6 +26,17 @@ if(isset($_REQUEST["action"]) && !empty($_REQUEST["action"])) {
                 }
         break;
 
+        case 'updateNoteInput' :
+                if(isset($_REQUEST["nid"]) && !empty($_REQUEST["nid"])
+                    && isset($_REQUEST["notes"]) && !empty($_REQUEST["notes"])) {
+                    $nid = $_REQUEST["nid"];
+                    $notes = $_REQUEST["notes"];
+                    updateNotes($nid, $notes);
+                } else {
+                    echo "ERROR messagesManager.php getMessagesByGameId(gameid) : gameid not received";
+                }
+        break;
+
         default:
         echo "nothing happened";
         break;
@@ -76,6 +87,9 @@ function getMessagesByGameId($gameid) {
 
 
 function getNotesByGameIdAndPlayerId($gameid, $playerid) {
+        $db = getConn();
+
+    $thePlayerNotes;
     $query = "SELECT id,";
         $query .= " html_content,";
         $query .= " player_id,";
@@ -94,6 +108,7 @@ function getNotesByGameIdAndPlayerId($gameid, $playerid) {
 
     while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
         $thePlayerNotes = (object) [
+            'id' => $row['id'],
             'html_content' => $row['html_content']
         ];
     }
@@ -102,5 +117,23 @@ function getNotesByGameIdAndPlayerId($gameid, $playerid) {
     echo json_encode($thePlayerNotes);
 
 }
+
+
+function updateNotes($nid, $notes) {
+    $db = getConn();
+
+
+    $stmt = $db->prepare("UPDATE player_notes SET html_content = ? WHERE id = ?");
+    
+
+    $stmt->bindParam(1, $notes);
+    $stmt->bindParam(2, $nid);
+
+    $stmt->execute();
+    $db = null;
+
+    echo "updateNotes réussie.";
+}
+
 
 ?>

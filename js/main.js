@@ -242,9 +242,9 @@ function setEventListeners() {
 function getNotesByGameIdAndPlayerId(gid, pid) {
 $.ajax({
 		type: 'GET',
-		url: 'php/gamesManager.php',
+		url: 'php/messagesManager.php',
 		data: {
-			action: 'getAvailableGames',
+			action: 'getNotesByGameIdAndPlayerId',
 			playerid: pid,
 			gameid: gid
 		},
@@ -262,12 +262,41 @@ $.ajax({
 }
 
 
-function setPlayerNotes(htmlContent) {
-	$noteInput.html(htmlContent);
+function setPlayerNotes(notes) {
+	$noteInput[0].dataset.noteid = notes.id;
+	$noteInput.html(notes.html_content);
 }
+
 function updateNoteInput() {
-	alert($noteInput.html());
+debugger;
+	var notes = $noteInput.html();
+	var notesId = $noteInput[0].dataset.noteid;
+    $.ajax({
+        type: 'POST',
+        url: 'php/messagesManager.php',
+        data: {
+        	action: 'updateNoteInput',
+        	nid: notesId,
+        	notes: notes
+        },
+        success: function (resultat, statut, erreur) {
+        	debugger;
+            console.log('updateNoteInput -> success');
+			console.log('resultat : ', resultat);
+			console.log('statut : ', statut);
+			console.log('erreur : ', erreur);
+        },
+        error: function(resultat, statut, erreur) {
+			console.log('updateNoteInput JS -> error');
+			console.log('resultat : ', resultat);
+			console.log('statut : ', statut);
+			console.log('erreur : ', erreur);
+
+        }
+    });
 }
+
+
 function makeDiceRollMsg(res, dice) {
 		var msg = 'd'+dice+'&nbsp;&nbsp; -->  &nbsp;&nbsp;\''+res+'\'';
 	switch(dice) {

@@ -47,7 +47,7 @@
           </div>
           <div class="one-tab-window" id="tab-notes">
             <div class="tab-content">
-              <div id="noteInput" contenteditable="true"></div>
+              <div id="noteInput" data-noteid="" contenteditable="true"></div>
             </div>
           </div>
         </div>
