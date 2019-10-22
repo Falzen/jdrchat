@@ -16,7 +16,7 @@ chart_colors.set('deeppinkish', '#e50064');
 chart_colors.set('violetish', '#954a97');
 chart_colors.set('lightblueish', '#009ee3');
 chart_colors.set('greenish', '#13a538');*/
-const FAKE_chat_messages = ['Mauris dictum interdum odio, ac facilisis nunc dictum ut.', 'Vivamus interdum orci et semper aliquet.', 'Aliquam scelerisque luctus tortor, ac faucibus tortor pulvinar euismod.', 'Vivamus interdum orci et semper aliquet.', 'Aliquam scelerisque luctus tortor, ac faucibus tortor pulvinar euismod.', 'Vivamus interdum orci et semper aliquet.', 'Aliquam scelerisque luctus tortor, ac faucibus tortor pulvinar euismod.', 'Vivamus interdum orci et semper aliquet.', 'Aliquam scelerisque luctus tortor, ac faucibus tortor pulvinar euismod.', 'Vivamus interdum orci et semper aliquet.', 'Aliquam scelerisque luctus tortor, ac faucibus tortor pulvinar euismod.', 'Vivamus interdum orci et semper aliquet.', 'Aliquam scelerisque luctus tortor, ac faucibus tortor pulvinar euismod.', 'Vivamus interdum orci et semper aliquet.', 'Aliquam scelerisque luctus tortor, ac faucibus tortor pulvinar euismod.', 'Vivamus interdum orci et semper aliquet.', 'Aliquam scelerisque luctus tortor, ac faucibus tortor pulvinar euismod.'];
+
 const FAKE_players = [
 	{
 		id : 1,
@@ -37,6 +37,7 @@ const FAKE_players = [
 		description : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla leo turpis, pulvinar et pulvinar eu, elementum quis erat. Donec faucibus elit vel porta tincidunt. Mauris vulputate ornare purus, id aliquet odio malesuada eu. Aliquam tempor, mauris nec venenatis tincidunt, libero lacus feugiat elit, sit amet dictum erat dui id enim. Integer tempor velit vitae tortor fermentum dictum. Morbi condimentum euismod nibh sed pulvinar. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla leo turpis, pulvinar et pulvinar eu, elementum quis erat. Donec faucibus elit vel porta tincidunt. Mauris vulputate ornare purus, id aliquet odio malesuada eu. Aliquam tempor, mauris nec venenatis tincidunt, libero lacus feugiat elit, sit amet dictum erat dui id enim. Integer tempor velit vitae tortor fermentum dictum. Morbi condimentum euismod nibh sed pulvinar. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla leo turpis, pulvinar et pulvinar eu, elementum quis erat. Donec faucibus elit vel porta tincidunt. Mauris vulputate ornare purus, id aliquet odio malesuada eu. Aliquam tempor, mauris nec venenatis tincidunt, libero lacus feugiat elit, sit amet dictum erat dui id enim. Integer tempor velit vitae tortor fermentum dictum. Morbi condimentum euismod nibh sed pulvinar.'
 	}
 ];
+var current_players = [];
 var d100_critical_fail_amount = 90;
 var d100_critical_win_amount = 10;
 //TODO chosenGameId should be in SESSION
@@ -45,32 +46,12 @@ $(document).ready(function() {
 	init();
 });
 
-function generateChatMessages(msgs) {
-	for(var i=0; i<msgs.length; i++) {
-		$chatInput.val(msgs[i]);
-		CURRENT_PLAYER = getRandomItemFromArray(FAKE_players);
-		$chatSend.click();
-		setPlayer();
-	}
-}
 function generatePlayers(players) {
 	for(var i=0; i<players.length; i++) {
 		$participantsList.append(createPlayerDOM(players[i]));
 	}
 }
 function createPlayerDOM(playerData) {
-		/*
-	id
-pseudo
-level
-description
-username
-password
-is_online
-date_derniere_connexion
-date_creation
-*/
-console.log(playerData.pseudo + ' : ', playerData.is_online);
 	var onePlayerDOM = '<li class="one-participant ' + playerData.pseudo;
     if(playerData.is_online == 1) {
     	onePlayerDOM += ' is-online';
@@ -100,8 +81,8 @@ console.log(playerData.pseudo + ' : ', playerData.is_online);
 	  onePlayerDOM += '</div>';
 	onePlayerDOM += '</li>';
 	return onePlayerDOM;
-
 }
+
 function generateAvailableGames(games) {
 for(var i=0; i<games.length; i++) {
 		$gamesList.append(createGameListItemDOM(games[i]));
@@ -119,6 +100,7 @@ function createGameListItemDOM(gameData) {
       	'</li>';
 	return oneGameDOM;
 }
+//TODO fake data
 function setPlayer() {
 	CURRENT_PLAYER = {
 		id : 1,
@@ -126,49 +108,37 @@ function setPlayer() {
 		level : '99'
 	}
 }
+
 function fetchChatMessage() {
 	var messageText = $chatInput.val().trim();
 	if(messageText == '') {
 		return;
 	}
-	var newChatMessageData = {
-		type : 'chatmsg',
-		who : CURRENT_PLAYER,
-		message : {
-			date : makeNiceDate(new Date()),
-			text : messageText
-		}
-	};
+	var newChatMessageData = makePlayerMessageObject('chatmsg', messageText);
 	return newChatMessageData;
 }
 
 function writeChatMessages(data) {
+	// no check for data!=null cause always a list (at least empty)
+	if(!data[0]) {
+		flashChatInput();
+		return;
+	}
 	var allMessagesDOM = '';
 	for(var i=0; i<data.length; i++) {
-	    var newMessage = '<li style="color: ' + CHAT_COLORS[data[i].player_id-1] + ';" class="one-chat-message" title="' + data[i].date_creation + '">' +
+	    var newMessage = '<li style="color: ' + CHAT_COLORS[data[i].player_id-1] + ';" class="one-chat-message ' + data[i].type + '" title="' + data[i].date_creation + '">' +
 	      '<span class="speaker-name">' + data[i].pseudo + ' : </span>' +
 	      '<span class="speaker-text">' + data[i].msg_content + '</span>' +
 	    '</li>';
 	    allMessagesDOM += newMessage;
 	}
     $chatMessages.append(allMessagesDOM);
-
-}
-function writeChatMessage(data) {
-
-	if(!data) {
-		flashChatInput();
-		return;
-	}
-
-    var newMessage = '<li style="color: ' + CHAT_COLORS[data.who.id-1] + ';" class="one-chat-message ' + data.type + '" title="' + data.message.date + '">' +
-      '<span class="speaker-name">' + data.who.pseudo + ' : </span>' +
-      '<span class="speaker-text">' + data.message.text + '</span>' +
-    '</li>';
-    $chatMessages.append(newMessage);
     $chatInput.val('');
     scrollToChatBottom();
+
 }
+
+
 function flashChatInput() {
 	$chatInput.css('box-shadow', '0 0 5px 0px red inset');
 	setTimeout(function() {
@@ -188,6 +158,9 @@ function makeNiceDate(ts) {
 function setCurrentGame(gameid) {
 
 }
+function closeAllPlayersInfo() {
+	$('li.one-participant').removeClass('is-open').scrollTop(0);
+}
 function setEventListeners() {
 	
 	$(document).on('click', 'li.one-game', function(ev) {
@@ -195,7 +168,9 @@ function setEventListeners() {
 		setCurrentGame(chosenGameId);
 	})
 	.on('click', '#chatSend', function(ev) {
-		writeChatMessage(fetchChatMessage());
+		var newMsgList = [];
+		newMsgList.push(fetchChatMessage());
+		writeChatMessages(newMsgList);
 	})
 	.on('keyup', '#chatInput', function(ev) {
 		if(ev.keyCode == 13) {
@@ -204,16 +179,18 @@ function setEventListeners() {
 	})
 	.on('click', '.one-tab-label', function(ev) {
 		var clickedTabId = 'tab-' + ev.currentTarget.dataset.label;
-		console.log('clickedTabId : ', clickedTabId);
 		setCurrentTab(clickedTabId);
 	})
-	.on('mouseenter', 'li.one-participant.is-online', function(ev) {
-		var otherPlayersHeight = ((FAKE_players.length-1)*45);
+	.on('click', 'li.one-participant.is-online:not(.is-open)', function(ev) {
+		closeAllPlayersInfo();
+		var otherPlayersHeight = ((current_players.length-1)*45);
 		ev.currentTarget.style.height = $('#tab-players').height() - otherPlayersHeight + 'px';
+		$(ev.currentTarget).addClass('is-open');
 	})
-	.on('mouseleave', 'li.one-participant.is-online', function(ev) {
+	.on('click', 'li.one-participant.is-online.is-open', function(ev) {
 		ev.currentTarget.scrollTop = 0;
 		ev.currentTarget.style.height = '45px';
+		ev.currentTarget.classList.remove('is-open');
 	})
 	.on('click', '.one-roll-container', function(ev) {
 		var clickedDie = this.dataset.val;
@@ -222,25 +199,28 @@ function setEventListeners() {
 		writeDiceRollResultOnDice(target, res);
 		
 		var diceRollMsg = makeDiceRollMsg(res, clickedDie);
-		var diceRollMsgObj = {
-			type : 'diceroll',
-			who : CURRENT_PLAYER,
-			message : {
-				date : makeNiceDate(new Date()),
-				text : diceRollMsg
-			}
-		};
-		writeChatMessage(diceRollMsgObj);
+		var diceRollMsgObj = makePlayerMessageObject('diceroll', diceRollMsg);
+		writeChatMessages([diceRollMsgObj]);
 	})
 	.on('blur', '#noteInput', function(ev) {
 		updateNoteInput();
 	});
 
+
 	
+}
+function makePlayerMessageObject(msgType, msgContent) {
+	return {
+		type : msgType,
+		player_id : CURRENT_PLAYER.id,
+		date_creation : makeNiceDate(new Date()),
+		pseudo : CURRENT_PLAYER.pseudo,
+		msg_content : msgContent
+	};
 }
 
 function getNotesByGameIdAndPlayerId(gid, pid) {
-$.ajax({
+	$.ajax({
 		type: 'GET',
 		url: 'php/messagesManager.php',
 		data: {
@@ -253,7 +233,7 @@ $.ajax({
 			setPlayerNotes(playerNotes);
 		},
 		error: function(resultat, statut, erreur) {
-			console.log('getGames JS -> error');
+			console.log('%c getGames JS -> error : ', 'color: tomato; font-size: 14px;');
 			console.log('resultat : ', resultat);
 			console.log('statut : ', statut);
 			console.log('erreur : ', erreur);
@@ -280,12 +260,9 @@ function updateNoteInput() {
         },
         success: function (resultat, statut, erreur) {
             console.log('updateNoteInput -> success');
-			console.log('resultat : ', resultat);
-			console.log('statut : ', statut);
-			console.log('erreur : ', erreur);
         },
         error: function(resultat, statut, erreur) {
-			console.log('updateNoteInput JS -> error');
+			console.log('%c updateNoteInput JS -> error : ', 'color: tomato; font-size: 14px;');
 			console.log('resultat : ', resultat);
 			console.log('statut : ', statut);
 			console.log('erreur : ', erreur);
@@ -296,39 +273,35 @@ function updateNoteInput() {
 
 
 function makeDiceRollMsg(res, dice) {
-		var msg = 'd'+dice+'&nbsp;&nbsp; -->  &nbsp;&nbsp;\''+res+'\'';
+	var msg = 'd'+dice+'&nbsp;&nbsp; -->  &nbsp;&nbsp;\''+res+'\'';
 	switch(dice) {
 		//case '4':break;case '6':break;case '12':break;case '20':break;
 		case '100':
 			if((res*100/dice) >= d100_critical_fail_amount) {
-				console.log(msg + ' crit fail. Ouch !');
 				return msg + ' crit fail. Ouch !';
 			} else if((res*100/dice) <= d100_critical_win_amount) {
-				console.log(msg + 'crit win. GG !');
 				return msg + ' crit win. GG !';
 			}
 		return msg;
 		break;
 	}
-		return msg;
+	return msg;
 }
 function setCurrentTab(tabid) {
 	$('.one-tab-label').removeClass('is-selected');
-	console.log('.label-'+tabid);
 	$('.label-'+tabid).addClass('is-selected');
 	$('.one-tab-window').removeClass('is-selected');
 	$('#'+tabid).addClass('is-selected');
 }
 
 function init() {
-	setPlayer();
-	//generatePlayers(FAKE_players);
 	getAllPlayers();
-	setEventListeners();
+	setPlayer();
 	getGames();
 	chosenGameId = 1;
 	getMessagesByGameId(chosenGameId);
 	getNotesByGameIdAndPlayerId(chosenGameId, CURRENT_PLAYER.id);
+	setEventListeners();
 }
 
 
@@ -344,7 +317,7 @@ function getGames() {
 			generateAvailableGames(allGames);
 		},
 		error: function(resultat, statut, erreur) {
-			console.log('getGames JS -> error');
+			console.log('%c getGames JS -> error : ', 'color: tomato; font-size: 14px;');
 			console.log('resultat : ', resultat);
 			console.log('statut : ', statut);
 			console.log('erreur : ', erreur);
@@ -361,16 +334,14 @@ function getMessagesByGameId() {
 			gameid: chosenGameId
 		},
 		success: function (resultat, statut, erreur) {
-			console.log('resultat : ', resultat);
 			gameMessages = JSON.parse(resultat);
-			console.log('gameMessages : ', gameMessages);
 			writeChatMessages(gameMessages);
 		},
 		error: function(resultat, statut, erreur) {
-			console.log('getMessagesByGameId JS -> error');
+			console.log('%c getMessagesByGameId JS -> error : ', 'color: tomato;');
 			console.log('resultat : ', resultat);
 			console.log('statut : ', statut);
-			console.log('erreur : ', erreur);
+			console.log('erreur : ', erreur);			
 		}
 	});
 }
@@ -383,11 +354,13 @@ function getAllPlayers() {
 			action: 'getAllPlayers'
 		},
 		success: function (resultat, statut, erreur) {
-			allPlayers = JSON.parse(resultat);
-			generatePlayers(allPlayers);
+			current_players = JSON.parse(resultat);
+			//TODO delete that
+			current_players = current_players.concat(current_players);
+			generatePlayers(current_players);
 		},
 		error: function(resultat, statut, erreur) {
-			console.log('getAllPlayers JS -> error');
+			console.log('%c getAllPlayers JS -> error : ', 'color: tomato; font-size: 14px;');
 			console.log('resultat : ', resultat);
 			console.log('statut : ', statut);
 			console.log('erreur : ', erreur);

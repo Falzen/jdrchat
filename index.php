@@ -1,6 +1,15 @@
 <?php
+session_start();
+  if (isset( $_SESSION['current_user']) && $_SESSION['current_user'] !== null) {
+      //TODO cette page devrait être une simple landing page sans contenu.
+      // dans ce if, on redirige vers qqchose comme main_chat.php (actuellement cette page)
+      echo 'bienvenue '. $_SESSION['current_user']->pseudo;
+  } else {
+      // go créer un compte noob ! YEET!!!
+      header("Location: login.php");
+  }
 
-  require_once("php/gamesManager.php"); 
+
 ?>
 <!doctype html>
 <html class="no-js" lang="">
@@ -14,7 +23,6 @@
   <link rel="manifest" href="site.webmanifest">
   <link rel="apple-touch-icon" href="icon.png">
   <!-- Place favicon.ico in the root directory -->
-
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/main.css">
 
@@ -25,8 +33,12 @@
   <!--[if IE]>
     <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
   <![endif]-->
+<!--
 
+<img src="img/ambiances/fireplace_gif.webp" alt="Relaxe" />
+-->
 <div id="pageContainer">
+  <a id="logoutLink" href="logout.php" title="logout">yeet</a>
   <div id="pageContent">
     <section id="menu">
       <div id="tabsContainer">
@@ -47,7 +59,8 @@
           </div>
           <div class="one-tab-window" id="tab-notes">
             <div class="tab-content">
-              <div id="noteInput" data-noteid="" contenteditable="true"></div>
+              <div id="noteInput" class="scroll-style-1" data-noteid="" contenteditable="true"></div>
+              <!--img src="img/ambiances/fireplace_gif.webp" alt="Relaxe" /-->
             </div>
           </div>
         </div>
@@ -57,12 +70,11 @@
     <section id="action">
       <div id="chatContainer">
         <div id="chatContent">
-          <ul id="chatMessages">
-           
+          <ul id="chatMessages" class="scroll-style-1" style="background-image:url(img/ambiances/fireplace_gif.webp);">
           </ul>
           <div id="chatActions">
             <input type="text" id="chatInput" />
-            <button id="chatSend">Envoyer</button>
+            <button id="chatSend">&nbsp;</button>
           </div>
 
           <div id="rolls-container">
