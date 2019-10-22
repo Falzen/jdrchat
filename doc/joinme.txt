@@ -1,0 +1,22 @@
+Comment participer !
+5 minutes max de setup
+
+nouveau dossier
+	git init
+	git clone https://github.com/Falzen/jdrchat.git
+
+localhost/phpmyadmin
+	créer nouvelle base de donnée (jdrchat par exemple)
+	selectionner cette nouvelle bdd (click dessus)
+	onglet SQL
+	coller le contenu du fichier init_fake_data_db.txt
+
+[repository]/php/config.php
+	modifier la première ligne du try{} de getConn :
+	$db = new PDO('mysql:host=localhost;dbname=jdrchat;charset=utf8', 'root', '');
+	par :
+		dbname= le nom de la bdd créée dans phpmyadmin
+		les 2 derniers arguments sont l'identifiants et le mdp de connexion à phpmyadmin
+
+
+Enjoy !

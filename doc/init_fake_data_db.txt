@@ -1,0 +1,201 @@
+-- phpMyAdmin SQL Dump
+-- version 4.6.6deb4
+-- https://www.phpmyadmin.net/
+--
+-- Host: db5000202677.hosting-data.io
+-- Generation Time: Oct 22, 2019 at 07:41 AM
+-- Server version: 5.7.27-log
+-- PHP Version: 7.0.33-0+deb9u5
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `dbs197639`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `chat_messages`
+--
+
+CREATE TABLE `chat_messages` (
+  `id` int(11) NOT NULL,
+  `player_id` int(11) NOT NULL,
+  `jeu_id` int(11) NOT NULL,
+  `date_creation` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `msg_content` text COLLATE utf8_unicode_ci
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `chat_messages`
+--
+
+INSERT INTO `chat_messages` (`id`, `player_id`, `jeu_id`, `date_creation`, `msg_content`) VALUES
+(1, 1, 1, '2019-10-20 06:37:20', 'je suis Falzen dans le jeu 1'),
+(2, 2, 1, '2019-10-20 06:37:20', 'je suis Freyggen dans le jeu 1 '),
+(3, 3, 1, '2019-10-20 06:37:20', 'Aliquam scelerisque luctus tortor, ac faucibus tortor pulvinar euismod.'),
+(4, 1, 1, '2019-10-20 06:37:20', 'Vivamus interdum orci et semper aliquet.'),
+(5, 2, 1, '2019-10-20 06:37:20', 'Aliquam scelerisque luctus tortor, ac faucibus tortor pulvinar euismod.'),
+(6, 2, 1, '2019-10-20 06:37:20', 'Vivamus interdum orci et semper aliquet.'),
+(7, 3, 1, '2019-10-20 06:37:20', 'Aliquam scelerisque luctus tortor, ac faucibus tortor pulvinar euismod.'),
+(8, 1, 2, '2019-10-20 06:37:20', 'Vivamus interdum orci et semper aliquet.'),
+(9, 1, 2, '2019-10-20 06:37:20', 'Aliquam scelerisque luctus tortor, ac faucibus tortor pulvinar euismod.'),
+(10, 3, 1, '2019-10-20 06:37:20', 'Vivamus interdum orci et semper aliquet.'),
+(11, 2, 1, '2019-10-20 06:37:20', 'Aliquam scelerisque luctus tortor, ac faucibus tortor pulvinar euismod.'),
+(12, 1, 1, '2019-10-20 06:37:20', 'Vivamus interdum orci et semper aliquet.'),
+(13, 3, 1, '2019-10-20 06:37:20', 'Aliquam scelerisque luctus tortor, ac faucibus tortor pulvinar euismod.'),
+(14, 3, 1, '2019-10-20 06:37:20', 'Vivamus interdum orci et semper aliquet.'),
+(15, 2, 1, '2019-10-20 06:37:20', 'Aliquam scelerisque luctus tortor, ac faucibus tortor pulvinar euismod.'),
+(16, 2, 1, '2019-10-20 06:37:20', 'Vivamus interdum orci et semper aliquet.'),
+(17, 2, 1, '2019-10-20 06:37:20', 'Aliquam scelerisque luctus tortor, ac faucibus tortor pulvinar euismod.'),
+(18, 1, 1, '2019-10-20 06:38:04', 'Mauris dictum interdum odio, ac facilisis nunc dictum ut.'),
+(19, 2, 2, '2019-10-20 06:38:04', 'je suis Freyggen dans le jeu 2'),
+(20, 1, 2, '2019-10-20 06:38:04', 'je suis Falzen dans le jeu 2'),
+(21, 2, 2, '2019-10-20 06:38:04', 'Aliquam scelerisque luctus tortor, ac faucibus tortor pulvinar euismod.'),
+(22, 2, 2, '2019-10-20 06:38:04', 'Vivamus interdum orci et semper aliquet.'),
+(23, 1, 2, '2019-10-20 06:38:04', 'Vivamus interdum orci et semper aliquet.'),
+(24, 1, 2, '2019-10-20 06:38:04', 'Aliquam scelerisque luctus tortor, ac faucibus tortor pulvinar euismod.'),
+(25, 2, 2, '2019-10-20 06:38:04', 'Aliquam scelerisque luctus tortor, ac faucibus tortor pulvinar euismod.'),
+(26, 1, 2, '2019-10-20 06:38:04', 'Vivamus interdum orci et semper aliquet.'),
+(27, 2, 2, '2019-10-20 06:38:04', 'Aliquam scelerisque luctus tortor, ac faucibus tortor pulvinar euismod.'),
+(28, 2, 2, '2019-10-20 06:38:04', 'Vivamus interdum orci et semper aliquet.'),
+(29, 2, 2, '2019-10-20 06:38:04', 'Aliquam scelerisque luctus tortor, ac faucibus tortor pulvinar euismod.');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `jeu`
+--
+
+CREATE TABLE `jeu` (
+  `id` int(11) NOT NULL,
+  `nom` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `description` text COLLATE utf8_unicode_ci NOT NULL,
+  `regles` text COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `jeu`
+--
+
+INSERT INTO `jeu` (`id`, `nom`, `description`, `regles`) VALUES
+(1, 'Jeu test 01', 'Description du Jeu test 01', 'Les règles du Jeu test 01'),
+(2, 'Jeu test 02', 'Description du Jeu test 02', 'Les règles du Jeu test 02');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `jeuxplayersxref`
+--
+
+CREATE TABLE `jeuxplayersxref` (
+  `id` int(11) NOT NULL,
+  `player_id` int(11) NOT NULL,
+  `jeu_id` int(11) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `jeuxplayersxref`
+--
+
+INSERT INTO `jeuxplayersxref` (`id`, `player_id`, `jeu_id`) VALUES
+(1, 1, 1),
+(2, 2, 1),
+(3, 3, 1),
+(4, 1, 2),
+(5, 2, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `players`
+--
+
+CREATE TABLE `players` (
+  `id` int(11) NOT NULL,
+  `pseudo` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `level` int(11) NOT NULL DEFAULT '1',
+  `description` text COLLATE utf8_unicode_ci NOT NULL,
+  `username` text COLLATE utf8_unicode_ci NOT NULL,
+  `password` text COLLATE utf8_unicode_ci NOT NULL,
+  `is_online` tinyint(1) NOT NULL DEFAULT '0',
+  `date_derniere_connexion` timestamp NULL DEFAULT NULL,
+  `date_creation` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `players`
+--
+
+INSERT INTO `players` (`id`, `pseudo`, `level`, `description`, `username`, `password`, `is_online`, `date_derniere_connexion`, `date_creation`) VALUES
+(1, 'Falzen', 1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla leo turpis, pulvinar et pulvinar eu, elementum quis erat. Donec faucibus elit vel porta tincidunt.', 'Falzen', 'Falzen', 1, NULL, '2019-10-20 06:20:00'),
+(2, 'Freyggen', 1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla leo turpis, pulvinar et pulvinar eu, elementum quis erat. Donec faucibus elit vel porta tincidunt. Mauris vulputate ornare purus, id aliquet odio malesuada eu.', 'Freyggen', 'Freyggen', 0, NULL, '2019-10-20 06:20:00'),
+(3, 'Démonique', 1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla leo turpis, pulvinar et pulvinar eu, elementum quis erat. Donec faucibus elit vel porta tincidunt. Mauris vulputate ornare purus, id aliquet odio malesuada eu. Aliquam tempor, mauris nec venenatis tincidunt, libero lacus feugiat elit, sit amet dictum erat dui id enim. Integer tempor velit vitae tortor fermentum dictum. Morbi condimentum euismod nibh sed pulvinar.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla leo turpis, pulvinar et pulvinar eu, elementum quis erat. Donec faucibus elit vel porta tincidunt. Mauris vulputate ornare purus, id aliquet odio malesuada eu. Aliquam tempor, mauris nec venenatis tincidunt, libero lacus feugiat elit, sit amet dictum erat dui id enim. Integer tempor velit vitae tortor fermentum dictum. Morbi condimentum euismod nibh sed pulvinar.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla leo turpis, pulvinar et pulvinar eu, elementum quis erat. Donec faucibus elit vel porta tincidunt. Mauris vulputate ornare purus, id aliquet odio malesuada eu. Aliquam tempor, mauris nec venenatis tincidunt, libero lacus feugiat elit, sit amet dictum erat dui id enim. Integer tempor velit vitae tortor fermentum dictum. Morbi condimentum euismod nibh sed pulvinar.', 'Démonique', 'Démonique', 1, NULL, '2019-10-20 06:20:00');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `chat_messages`
+--
+ALTER TABLE `chat_messages`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `player_id` (`player_id`),
+  ADD KEY `jeu_id` (`jeu_id`);
+
+--
+-- Indexes for table `jeu`
+--
+ALTER TABLE `jeu`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `jeuxplayersxref`
+--
+ALTER TABLE `jeuxplayersxref`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `player_id` (`player_id`),
+  ADD KEY `jeu_id` (`jeu_id`);
+
+--
+-- Indexes for table `players`
+--
+ALTER TABLE `players`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `chat_messages`
+--
+ALTER TABLE `chat_messages`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+--
+-- AUTO_INCREMENT for table `jeu`
+--
+ALTER TABLE `jeu`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `jeuxplayersxref`
+--
+ALTER TABLE `jeuxplayersxref`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+--
+-- AUTO_INCREMENT for table `players`
+--
+ALTER TABLE `players`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
