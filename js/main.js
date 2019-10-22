@@ -249,6 +249,7 @@ function makeDiceRollMsg(res, dice) {
 		return msg;
 		break;
 	}
+		return msg;
 }
 function setCurrentTab(tabid) {
 	$('.one-tab-label').removeClass('is-selected');
