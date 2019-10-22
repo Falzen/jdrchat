@@ -268,7 +268,6 @@ function setPlayerNotes(notes) {
 }
 
 function updateNoteInput() {
-debugger;
 	var notes = $noteInput.html();
 	var notesId = $noteInput[0].dataset.noteid;
     $.ajax({
@@ -280,7 +279,6 @@ debugger;
         	notes: notes
         },
         success: function (resultat, statut, erreur) {
-        	debugger;
             console.log('updateNoteInput -> success');
 			console.log('resultat : ', resultat);
 			console.log('statut : ', statut);
