@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  mer. 23 oct. 2019 à 06:35
+-- Généré le :  mer. 23 oct. 2019 à 23:33
 -- Version du serveur :  5.7.26
 -- Version de PHP :  7.2.18
 
@@ -143,14 +143,14 @@ CREATE TABLE IF NOT EXISTS `players` (
   `date_derniere_connexion` datetime DEFAULT NULL,
   `date_creation` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Déchargement des données de la table `players`
 --
 
 INSERT INTO `players` (`id`, `pseudo`, `level`, `description`, `username`, `password`, `is_online`, `date_derniere_connexion`, `date_creation`) VALUES
-(1, 'Falzen', 1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla leo turpis, pulvinar et pulvinar eu, elementum quis erat. Donec faucibus elit vel porta tincidunt.', 'Falzen', 'f01870f0701268dbb0d1ea7538ec26e3', 1, '2019-10-23 01:25:19', '2019-10-20 06:20:00'),
+(1, 'Falzen', 1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla leo turpis, pulvinar et pulvinar eu, elementum quis erat. Donec faucibus elit vel porta tincidunt.', 'Falzen', 'f01870f0701268dbb0d1ea7538ec26e3', 1, '2019-10-24 00:58:27', '2019-10-20 06:20:00'),
 (2, 'Freyggen', 1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla leo turpis, pulvinar et pulvinar eu, elementum quis erat. Donec faucibus elit vel porta tincidunt. Mauris vulputate ornare purus, id aliquet odio malesuada eu.', 'Freyggen', 'Freyggen', 0, NULL, '2019-10-20 06:20:00'),
 (3, 'Démonique', 1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla leo turpis, pulvinar et pulvinar eu, elementum quis erat. Donec faucibus elit vel porta tincidunt. Mauris vulputate ornare purus, id aliquet odio malesuada eu. Aliquam tempor, mauris nec venenatis tincidunt, libero lacus feugiat elit, sit amet dictum erat dui id enim. Integer tempor velit vitae tortor fermentum dictum. Morbi condimentum euismod nibh sed pulvinar.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla leo turpis, pulvinar et pulvinar eu, elementum quis erat. Donec faucibus elit vel porta tincidunt. Mauris vulputate ornare purus, id aliquet odio malesuada eu. Aliquam tempor, mauris nec venenatis tincidunt, libero lacus feugiat elit, sit amet dictum erat dui id enim. Integer tempor velit vitae tortor fermentum dictum. Morbi condimentum euismod nibh sed pulvinar.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla leo turpis, pulvinar et pulvinar eu, elementum quis erat. Donec faucibus elit vel porta tincidunt. Mauris vulputate ornare purus, id aliquet odio malesuada eu. Aliquam tempor, mauris nec venenatis tincidunt, libero lacus feugiat elit, sit amet dictum erat dui id enim. Integer tempor velit vitae tortor fermentum dictum. Morbi condimentum euismod nibh sed pulvinar.', 'Démonique', 'Démonique', 1, NULL, '2019-10-20 06:20:00');
 

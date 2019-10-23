@@ -39,7 +39,7 @@ session_start();
 -->
 <div id="pageContainer">
   <a id="logoutLink" href="logout.php" title="logout">yeet</a>
-  <div id="pageContent">
+  <div id="pageContent" class="welcome">
     <section id="menu">
       <div id="tabsContainer">
         <ul id="tabLabels">

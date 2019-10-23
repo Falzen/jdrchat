@@ -1,6 +1,5 @@
 <?php
 session_start();
-session_destroy();
 require_once("php/config.php"); 
 
   if (isset($_SESSION['current_user'])) {
@@ -28,77 +27,43 @@ require_once("php/config.php");
         <meta name="theme-color" content="#fafafa">
     </head>
 
-    <body id="login-page">
-        <!--[if IE]>
-    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
-  <![endif]-->
-        <!--
+    <body>
 
-<img src="img/ambiances/fireplace_gif.webp" alt="Relaxe" />
--->
         <div id="pageContainer">
+            <a id="logoutLink" href="logout.php" title="logout">yeet</a>
+
             <div id="pageContent">
 
                 <section id="signin">
-                    <h1>Incarner</h1>
+                  <div class="front">
+                    <h1>Exister</h1>
+                        <input value="test" class="login-signin-input" type="text" id="signin-inputUsername" placeholder="login" required>
+                        <input value="test" class="login-signin-input" type="password" id="signin-inputPassword" placeholder="password" required>
+                        <input value="test" class="login-signin-input" type="pseudo" id="signin-inputPseudo" placeholder="pseudo" required>
+                        <button id="signin-btn">Exister</button>
+                   
+                  </div>
+
+                  <div class="back">
+                    <img class="cover" src="img/cover.png" alt="The Chatroom">
+                  </div>
+
+                    
                 </section>
 
                 <section id="login">
-                    <h1>Exister</h1>
-                    <form action="" method="post">
-                        <input type="text" name="username" placeholder="login" required>
-                        <input type="password" name="password" placeholder="password" required>
-                        <input type="submit" value="Exister">
-                    </form>
-                    <?php
-                      if (!empty($_POST)) {
-                          if (isset($_POST['username']) && isset($_POST['password'])) {
-                      
-                              $passwordInputHashed = md5($_POST['password']);
-                              $db = getConn();
-                              $query = "SELECT * FROM players WHERE username = ? AND password = ?";
-                              $stmt = $db->prepare($query);
-                              $stmt->bindParam(1, $_POST['username']);
-                              $stmt->bindParam(2, $passwordInputHashed);
-                              $stmt->execute();
-                              $user = null;
-                              $row = $stmt->fetch();
-                              if ($row != null) {
-                                  $user = (object)[
-                                      'id' => $row['id'],
-                                      'pseudo' => $row['pseudo'],
-                                      'level' => $row['level'],
-                                      'description' => $row['description'],
-                                      'username' => $row['username'],
-                                      'is_online' => $row['is_online'],
-                                      'date_derniere_connexion' => $row['date_derniere_connexion'],
-                                      'date_creation' => $row['date_creation']
-                                  ];
-                              }
-                              if ($user != null) {
-                                print_r($user);
-                                  $_SESSION['current_user'] = $user;
-                                  date_default_timezone_set('Europe/Paris');
-                                  $now = time();
-                                  $mydate = date('Y-m-d H:i:s', $now);
-                      
-                                  //$mydate = date('Y-m-d H:i:s', $ts);
-                                  $updateUser = "UPDATE players SET date_derniere_connexion = ? WHERE id = ?";
-                                  $stmt = $db->prepare($updateUser);
-                      
-                                  $stmt->bindParam(1, $mydate);
-                                  $stmt->bindParam(2, $_SESSION['current_user']->id);
-                                  $stmt->execute();
-                                  $db = null;
-                                  die();
-                                  header("Location: /index.php");
-                              } else {
-                                  echo '<p class="login-yeet">yeet</p>';
-                              }
-                          }
-                      }
-                    ?>
+                  <div class="front">
+                    <h1>Incarner</h1>
+                        <input class="login-signin-input" value="Falzen" type="text" id="login-inputUsername" placeholder="login" required>
+                        <input class="login-signin-input" value="Falzen" type="password" id="login-inputPassword" placeholder="password" required>
+                        <input class="login-signin-input" value="Falzen" type="password" id="login-inputPseudo" placeholder="pseudo" required>
+                        <button id="login-btn">Incarner</button>
+                   
+                  </div>
 
+                  <div class="back">
+                    <img class="cover" src="img/cover.png" alt="The Chatroom">
+                  </div>
                 </section>
             </div>
         </div>

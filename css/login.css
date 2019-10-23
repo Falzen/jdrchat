@@ -1,49 +1,176 @@
 
 /* admin */
-#login-page {
-	min-height: 100vh;
+html {
+  min-height: 100%;
 }
-#login-page #pageContent{
+body {
+  min-height: 100vh;
+    overflow: hidden;
+}
+
+*:not(input) {
+
+   -moz-user-select: -moz-none;
+   -khtml-user-select: none;
+   -webkit-user-select: none;
+}
+ #pageContent{
 	display: flex;
 	flex-flow: row nowrap;
-   transform-style: preserve-3d;
-	perspective: 1600px;
+   	transform-style: preserve-3d;
+	margin-top: 160px;
+    perspective: 1700px;
 	background: transparent;
+    width: 600px;
+    height: 410px;
+    transform: translateX(-150px);
+	transition: transform 0.5s ease;
 }
-#login-page p.login-yeet {
+ p.login-yeet {
   margin: 20px auto;
   color: lightgrey;
 }
-#login-page section {
+ section {
 	margin: 8px 0;
 	text-align: center;
+ 	position: relative;
+	transition: all 0.4s ease, box-shadow 0.5s ease, opacity 2000s ease;
 }
-#login-page section#signin {
+ section#signin {
 	width: 50%;
-	z-index: 200;
-	background-color: rgb(100,100,200);
 	transform: rotateY(179deg);
 	transform-origin: right;
+	border-radius: 25px 0 0 25px
 }
-#login-page section#login {
-	width: 50%;
+#signin, #login {
+  transform-style: preserve-3d;
+}
+.front, .back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+#signin .back,
+#login .back {
+  transform: rotateY(180deg);
+}
 
-	background-color: rgb(100,200,100);
+/* is inside left page */
+#signin .front {
+    background: linear-gradient(-110deg, whitesmoke, lightgrey, lightgrey, grey);
+  color: black;
+    border-radius: 25px 0 0 25px;
+}
+/* is actually the book cover */
+#signin .back {
+  background-color: brown;
+  color: black;
+    border-radius: 0 25px 25px 0;
+    backface-visibility: visible;
+    pointer-events:none;  
+}
+.cover {
+    display: block;
+    width: calc(100% + 35px);
+    position: relative;
+    top: -25px;
+    left: -18px;
+    pointer-events:none; 
+}
+
+#signin .cover {
+left: -12px;
+}
+#login .cover {
+    left: -20px;
+}
+
+#login .front {
+    background: linear-gradient(100deg, whitesmoke, lightgrey, lightgrey, grey);
+  color: black;
+    border-radius: 0 25px 25px 0;
+}
+
+#login .back {
+  color: black;
+    backface-visibility: visible;
+    pointer-events:none;  
+}
+
+.login-signin-input {
+    width: 80%;
+    display: block;
+    margin: 3px auto;
+    padding: 2px 5px;
+    z-index: 1000;
+}
+
+
+ section#login {
+	width: 50%;
 	transform: rotateY(0deg);
 	transform-origin: left;
-}
-#login-page section {
-	transition: all 0.4s ease, box-shadow 0.5s 0.2s ease;
-
-}
-#login-page #pageContent.is-open section{
-	box-shadow: 0 0px 50px 5px goldenrod;
-}
-#login-page #pageContent.is-open #signin {
-	transform: rotateY(15deg) !important;
-
+    border-radius: 0 25px 25px 0;
 }
 
-#login-page #pageContent.is-open #login {
-	transform: rotateY(-15deg) !important;
+ #pageContent.is-open {
+	transform: translateX(0px);
+ }
+ .is-opening #signin {
+    box-shadow: -15px 0px 15px -2px goldenrod;
+	transform: rotateY(170deg);
+}
+
+ .is-open section{
+	box-shadow: 0 0px 50px 5px goldenrod !important;
+}
+ .is-open #signin {
+    transform: rotateY(35deg);
+}
+ .is-open #login {
+    transform: rotateY(-35deg);
+}
+
+ #pageContent.is-close #signin {
+	transform: rotateY(0deg);
+}
+ #pageContent.is-close #login {
+	transform: rotateY(-179deg);
+}
+
+#pageContent.is-open #signin.watched {
+	transform: rotateY(20deg);
+}
+#pageContent.is-open #login.not-watched {
+	transform: rotateY(-50deg);
+}
+#pageContent.is-open #login.watched {
+	transform: rotateY(-15deg);
+}
+#pageContent.is-open #signin.not-watched {
+	transform: rotateY(50deg);
+}
+section#signin.fade {
+	transition: all 3s ease-in, opacity 0.9s ease-in;
+    transform: rotateY(179deg) translateY(100vh) !important;
+    
+    opacity: 0;
+}section#login.fade {
+	transition: all 3s ease-in, opacity 0.9s ease-in;
+    transform: translateY(100vh) !important;
+    
+    opacity: 0;
+}
+
+
+
+.front button {
+
+    z-index: 1000;
+    width: 150px;
+}
+
+input.input-error {
+	border: 1px solid red;
 }

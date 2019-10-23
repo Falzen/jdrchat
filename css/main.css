@@ -137,6 +137,9 @@ ul {
     list-style: none;
 }
 
+
+
+
 #pageContent {
     display: flex;
     flex-flow: row nowrap;
@@ -147,6 +150,10 @@ ul {
     background-color: #000000;
     padding: 5px;
     margin-top: 60px;
+}
+.welcome {
+    opacity: 0;
+    transition: opacity 1s ease;
 }
 #pageContent > section {
     height: 100%;

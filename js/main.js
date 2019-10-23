@@ -295,6 +295,7 @@ function setCurrentTab(tabid) {
 }
 
 function init() {
+
 	getAllPlayers();
 	setPlayer();
 	getGames();
@@ -302,9 +303,13 @@ function init() {
 	getMessagesByGameId(chosenGameId);
 	getNotesByGameIdAndPlayerId(chosenGameId, CURRENT_PLAYER.id);
 	setEventListeners();
+
+	showPage();
 }
 
-
+function showPage() {
+	$('.welcome').css('opacity', 1);
+}
 function getGames() {
 	$.ajax({
 		type: 'GET',
