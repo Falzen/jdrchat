@@ -65,6 +65,8 @@ function getMessagesByGameId($gameid) {
         $query .= " AND jeuxplayersxref.player_id = chat_messages.player_id";
         $query .= " AND players.id = chat_messages.player_id";
         $query .= " AND jeuxplayersxref.jeu_id = chat_messages.jeu_id";
+    $query .= " ORDER BY";
+        $query .= " chat_messages.date_creation ASC";
  	$stmt = $db->prepare($query);
     $stmt->bindParam(1, $gameid);
 	$stmt->execute();

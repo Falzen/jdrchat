@@ -1,0 +1,49 @@
+
+/* admin */
+#login-page {
+	min-height: 100vh;
+}
+#login-page #pageContent{
+	display: flex;
+	flex-flow: row nowrap;
+   transform-style: preserve-3d;
+	perspective: 1600px;
+	background: transparent;
+}
+#login-page p.login-yeet {
+  margin: 20px auto;
+  color: lightgrey;
+}
+#login-page section {
+	margin: 8px 0;
+	text-align: center;
+}
+#login-page section#signin {
+	width: 50%;
+	z-index: 200;
+	background-color: rgb(100,100,200);
+	transform: rotateY(179deg);
+	transform-origin: right;
+}
+#login-page section#login {
+	width: 50%;
+
+	background-color: rgb(100,200,100);
+	transform: rotateY(0deg);
+	transform-origin: left;
+}
+#login-page section {
+	transition: all 0.4s ease, box-shadow 0.5s 0.2s ease;
+
+}
+#login-page #pageContent.is-open section{
+	box-shadow: 0 0px 50px 5px goldenrod;
+}
+#login-page #pageContent.is-open #signin {
+	transform: rotateY(15deg) !important;
+
+}
+
+#login-page #pageContent.is-open #login {
+	transform: rotateY(-15deg) !important;
+}

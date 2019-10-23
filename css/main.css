@@ -493,14 +493,6 @@ a#logoutLink {
   color: inherit;
   text-decoration: none;
 }
-/* admin */
-#login-page #pageContent{
-  display: block !important;
-}
-#login-page p.login-yeet {
-  margin: 20px auto;
-  color: lightgrey;
-}
 
 /* ==========================================================================
    Helper classes
