@@ -16,6 +16,17 @@ if(isset($_REQUEST["action"]) && !empty($_REQUEST["action"])) {
                 }
         break;
 
+        case "refreshMessagesByGameIdAndMinDate" :
+                if(isset($_REQUEST["when"]) && !empty($_REQUEST["when"])
+                && isset($_REQUEST["gameid"]) && !empty($_REQUEST["gameid"])) {
+                    $minDate = $_REQUEST["when"];
+                    $gameId = $_REQUEST["gameid"];
+                    refreshMessagesByGameIdAndMinDate($minDate, $gameId);
+                } else {
+                    echo "ERROR messagesManager.php getMessagesByMinDate(minDate) : minDate not received";
+                }
+        break;
+
         case "getNotesByGameIdAndPlayerId" :
                 if(isset($_REQUEST["playerid"]) && !empty($_REQUEST["playerid"])
                     && isset($_REQUEST["gameid"]) && !empty($_REQUEST["gameid"])) {
@@ -44,27 +55,32 @@ if(isset($_REQUEST["action"]) && !empty($_REQUEST["action"])) {
                 saveNotes($uid, $gid, $notes);
                 
             } else {
-                echo "ERROR messagesManager.php getMessagesByGameId(gameid) : gameid not received";
+                echo "ERROR messagesManager.php  upsertNoteInput(gameid) : gameid not received";
             }
         break;
 
+
         case 'saveMessage' :
+
             if(isset($_REQUEST["type"]) && !empty($_REQUEST["type"])
                 && isset($_REQUEST["player_id"]) && !empty($_REQUEST["player_id"])
-                && isset($_REQUEST["date_creation_db"]) && !empty($_REQUEST["date_creation_db"])
+                && isset($_REQUEST["game_id"]) && !empty($_REQUEST["game_id"])
                 && isset($_REQUEST["pseudo"]) && !empty($_REQUEST["pseudo"])
-                && isset($_REQUEST["msg_content"]) && !empty($_REQUEST["msg_content"])) {
+                && isset($_REQUEST["date_creation"]) && !empty($_REQUEST["date_creation"])
+                && isset($_REQUEST["msg_content"]) && !empty($_REQUEST["msg_content"])
+            ) {
                 $msgData = (object) [
                     'type' => $_REQUEST['type'],
                     'player_id' => $_REQUEST['player_id'],
-                    'date_creation_db' => $_REQUEST['date_creation_db'],
+                    'game_id' => $_REQUEST['game_id'],
                     'pseudo' => $_REQUEST['pseudo'],
+                    'date_creation' => $_REQUEST['date_creation'],
                     'msg_content' => $_REQUEST['msg_content']
                 ];
                 // could be htmlspecialchars for msg_cotent to prevent imgs and gifs
                 saveMessage($msgData);
             } else {
-                echo "ERROR messagesManager.php getMessagesByGameId(gameid) : gameid not received";
+                echo "ERROR messagesManager.php saveMessage() : some var not received";
             }
         break;
 
@@ -75,6 +91,55 @@ if(isset($_REQUEST["action"]) && !empty($_REQUEST["action"])) {
     }// end switch action
 }// end if isset action
 
+function refreshMessagesByGameIdAndMinDate($minDate, $gameId) {
+$db = getConn();
+    $allMessages = [];
+    
+    $query = "SELECT chat_messages.id as msg_id,";
+        $query .= " chat_messages.player_id as msg_playerid,";
+        $query .= " chat_messages.game_id as msg_gameid,";
+        $query .= " chat_messages.type as msg_type,";
+        $query .= " chat_messages.date_creation_front as msg_date,";
+        $query .= " chat_messages.date_creation as msg_date_back,";
+        $query .= " chat_messages.msg_content as msg_content,";
+        $query .= " players.pseudo as pseudo,";
+        $query .= " jeuxplayersxref.player_id as player_id,";
+        $query .= " jeuxplayersxref.game_id";
+    $query .= " FROM";
+        $query .= " chat_messages, players, jeuxplayersxref"; 
+    $query .= " WHERE";
+        $query .= " chat_messages.game_id = ?";
+        $query .= " AND jeuxplayersxref.player_id = chat_messages.player_id";
+        $query .= " AND players.id = chat_messages.player_id";
+        $query .= " AND players.id != ?";
+        $query .= " AND jeuxplayersxref.game_id = chat_messages.game_id";
+        $query .= " AND chat_messages.date_creation > ?";
+    $query .= " ORDER BY";
+        $query .= " chat_messages.date_creation ASC";
+    $stmt = $db->prepare($query);
+    $stmt->bindParam(1, $gameId);
+    $stmt->bindParam(2, $_SESSION['current_user']->id);
+    $stmt->bindParam(3, $minDate);
+    $stmt->execute();
+
+    while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+        $oneMessage = (object) [
+            'id' => $row['msg_id'],
+            'player_id' => $row['msg_playerid'],
+            'game_id' => $row['msg_gameid'],
+            'type' => $row['msg_type'],
+            'date_creation' => $row['msg_date'],
+            'when' => $row['msg_date_back'],
+            'msg_content' => $row['msg_content'],
+            'player_id' => $row['player_id'],
+            'pseudo' => $row['pseudo']
+        ];
+        array_push($allMessages, $oneMessage);
+    }
+
+    $db = null;
+    echo json_encode($allMessages);
+}
 
 function getMessagesByGameId($gameid) {
     $db = getConn();
@@ -82,21 +147,24 @@ function getMessagesByGameId($gameid) {
     
     $query = "SELECT chat_messages.id as msg_id,";
         $query .= " chat_messages.player_id as msg_playerid,";
-        $query .= " chat_messages.jeu_id as msg_gameid,";
-        $query .= " chat_messages.date_creation as msg_date,";
+        $query .= " chat_messages.game_id as msg_gameid,";
+        $query .= " chat_messages.type as msg_type,";
+        $query .= " chat_messages.date_creation_front as msg_date,";
+        $query .= " chat_messages.date_creation as msg_date_back,";
         $query .= " chat_messages.msg_content as msg_content,";
         $query .= " players.pseudo as pseudo,";
         $query .= " jeuxplayersxref.player_id as player_id,";
-        $query .= " jeuxplayersxref.jeu_id";
+        $query .= " jeuxplayersxref.game_id";
     $query .= " FROM";
         $query .= " chat_messages, players, jeuxplayersxref"; 
     $query .= " WHERE";
-        $query .= " chat_messages.jeu_id = ?";
+        $query .= " chat_messages.game_id = ?";
         $query .= " AND jeuxplayersxref.player_id = chat_messages.player_id";
         $query .= " AND players.id = chat_messages.player_id";
-        $query .= " AND jeuxplayersxref.jeu_id = chat_messages.jeu_id";
+        $query .= " AND jeuxplayersxref.game_id = chat_messages.game_id";
     $query .= " ORDER BY";
         $query .= " chat_messages.date_creation ASC";
+        $query .= " LIMIT 1000";
  	$stmt = $db->prepare($query);
     $stmt->bindParam(1, $gameid);
 	$stmt->execute();
@@ -105,8 +173,10 @@ function getMessagesByGameId($gameid) {
         $oneMessage = (object) [
             'id' => $row['msg_id'],
             'player_id' => $row['msg_playerid'],
-            'jeu_id' => $row['msg_gameid'],
+            'game_id' => $row['msg_gameid'],
+            'type' => $row['msg_type'],
             'date_creation' => $row['msg_date'],
+            'when' => $row['msg_date_back'],
             'msg_content' => $row['msg_content'],
             'player_id' => $row['player_id'],
             'pseudo' => $row['pseudo']
@@ -177,8 +247,8 @@ function saveNotes($uid, $gid, $notes) {
 
 function saveMessage($data) {
     $db = getConn();
-    $stmtInsert = $db->prepare("INSERT INTO chat_messages (player_id, jeu_id, msg_content) VALUES (?, ?, ?)");
-    $stmtInsert->execute(array($data->player_id, $data->jeu_id, $data->msg_content));
+    $stmtInsert = $db->prepare("INSERT INTO chat_messages (player_id, game_id, type, pseudo, date_creation_front, msg_content) VALUES (?, ?, ?, ?, ?, ?)");
+    $stmtInsert->execute(array($data->player_id, $data->game_id, $data->type, $data->pseudo, $data->date_creation, $data->msg_content));
     $db = null;
 }
 ?>

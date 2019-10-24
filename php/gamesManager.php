@@ -28,10 +28,10 @@ function getGamesByPlayerId($pid) {
     $db = getConn();
     $allGames = [];
     
-    $query = "SELECT id, nom, description, regles FROM jeu WHERE id IN (SELECT jeu_id FROM jeuxplayersxref WHERE player_id = ?)";
- 	$stmt = $db->prepare($query);
+    $query = "SELECT id, nom, description, regles FROM jeu WHERE id IN (SELECT game_id FROM jeuxplayersxref WHERE player_id = ?)";
+    $stmt = $db->prepare($query);
     $stmt->bindParam(1, $pid);
-	$stmt->execute();
+    $stmt->execute();
 
     while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
         $oneGame = (object) [

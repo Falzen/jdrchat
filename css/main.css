@@ -228,21 +228,24 @@ ul#tabLabels li.one-tab-label:last-child {
 .tab-content ul#participantsList {
 }
 #participantsList li.one-participant {
-  padding: 0px 6px;
+  /* padding right 25px pour compenser l'apparition de la scrollbar 
+  quand open, ce padding revient à la normale */
+  padding: 0px 25px 0px 6px;
   cursor: default;
   overflow: hidden;
   height: 45px;
-  
-  transition: all 0.2s ease;
+  position: relative;
+  transition: all 0.2s ease, padding 0s linear;
 }
 .one-participant.is-online {
   
 }
 .one-participant.is-offline {
-  filter: grayscale(1);
-  opacity: 0.9;
+    background-color: #000000;
+    color: #3c3c3c;
 }
 #participantsList li.one-participant.is-online.is-open {
+    padding: 0px 6px;
   overflow-y: scroll;
 }
 #participantsList li.one-participant.is-online:hover p.pseudo {
@@ -250,6 +253,12 @@ ul#tabLabels li.one-tab-label:last-child {
 }
 #participantsList li.one-participant.is-online:not(.is-open) {
   height: 45px !important;
+}
+
+#participantsList li.one-participant.is-mj {
+  background: url(https://image.flaticon.com/icons/png/128/1920/1920485.png) top left no-repeat;
+  background: url(https://i.pinimg.com/originals/50/c5/87/50c5874cde7c12f7b59fa97a0438e45d.png) top left no-repeat;
+  background-size: 40px;
 }
 .one-participant div.participant {
   position: relative;
@@ -265,6 +274,8 @@ ul#tabLabels li.one-tab-label:last-child {
   text-align: center;
   margin: 0;
   line-height: 45px;
+  /* compense l'extra padding right quand plié */
+    text-indent: 25px;
   transition: all 0.2s ease;
 }
 .participant .details {
@@ -336,12 +347,14 @@ ul#tabLabels li.one-tab-label:last-child {
 #chatContent {
 }
 
-ul#chatMessages {
+#chatMessages {
     height: 450px;
     width: 100%;
     background-color: black;
     padding: 5px 10px;
     overflow-y: scroll;
+
+    padding-left: 50px;
 
 
     /*works with JS that sets value for background-image:url();*/

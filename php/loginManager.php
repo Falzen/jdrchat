@@ -107,7 +107,7 @@ function trySignin($usernameInput, $passwordInput, $pseudoInput) {
     }
     if ($user != null) {
         $_SESSION['current_user'] = $user;
-        updateLastConnectionDate();
+        updateLastConnectionDateAndSetOnline();
         $return->code = 'aaight';
         $return->data = $user;
     } else {
@@ -142,14 +142,14 @@ function tryLogin($usernameInput, $passwordInput, $pseudoInput) {
           'level' => $row['level'],
           'description' => $row['description'],
           'username' => $row['username'],
-          'is_online' => $row['is_online'],
+          'is_online' => true,
           'date_derniere_connexion' => $row['date_derniere_connexion'],
           'date_creation' => $row['date_creation']
       ];
     }
     if ($user != null) {
         $_SESSION['current_user'] = $user;
-        updateLastConnectionDate();
+        updateLastConnectionDateAndSetOnline();
         $return->code = 'aaight';
         $return->data = $user;
     } else {
@@ -162,7 +162,7 @@ function tryLogin($usernameInput, $passwordInput, $pseudoInput) {
 }
 
 
-
+/*
 function updateLastConnectionDate() {
     $db = getConn();
     date_default_timezone_set('Europe/Paris');
@@ -174,6 +174,28 @@ function updateLastConnectionDate() {
     $stmt->bindParam(1, $mydate);
     $stmt->bindParam(2, $_SESSION['current_user']->id);
     $stmt->execute();
+    $db = null;
+}
+*/
+function updateLastConnectionDateAndSetOnline() {
+    $db = getConn();
+    $uid = $_SESSION['current_user']->id;
+    date_default_timezone_set('Europe/Paris');
+    $now = time();
+    $mydate = date('Y-m-d H:i:s', $now);
+    $updateUser = "UPDATE players SET date_derniere_connexion = ?, is_online = '1' WHERE id = ?";
+    $stmt = $db->prepare($updateUser);
+    $stmt->bindParam(1, $mydate);
+    $stmt->bindParam(2, $uid);
+    $stmt->execute();
+    $db = null;
+}
+
+function setOffline() {
+    $db = getConn();
+    $uid = $_SESSION['current_user']->id;
+    $stmt = $db->prepare("UPDATE players SET is_online = '0' WHERE id = ?");
+    $stmt->execute(array($uid, 0));
     $db = null;
 }
 

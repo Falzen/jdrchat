@@ -16,6 +16,12 @@ if(isset($_REQUEST["action"]) && !empty($_REQUEST["action"])) {
             getAllPlayers();
         break;
 
+        case "getPlayersByGameId" :
+        if(isset($_REQUEST["gid"]) && !empty($_REQUEST["gid"])) {
+            getPlayersByGameId($_REQUEST["gid"]);
+        }
+        break;
+
         default:
         echo "nothing happened";
         break;
@@ -47,6 +53,47 @@ function getAllPlayers() {
 
     $db = null;
     echo json_encode($allPlayers);
+}
+
+
+function getPlayersByGameId($gid) {
+    $db = getConn();
+    $playersOfGame = [];
+    $query = "SELECT";
+    $query .= " p.id,";
+    $query .= " p.pseudo,";
+    $query .= " p.level,";
+    $query .= " p.description,";
+    $query .= " p.is_online,";
+    $query .= " p.date_derniere_connexion,";
+    $query .= " p.date_creation,";
+    $query .= " xref.is_mj as is_mj";
+    $query .= " FROM";
+    $query .= " players AS p";
+    $query .= " INNER JOIN jeuxplayersxref AS xref ";
+    $query .= " ON p.id = xref.player_id";
+    $query .= " AND xref.game_id = ?";
+
+    $stmt = $db->prepare($query);
+    $stmt->bindParam(1, $gid);
+    $stmt->execute();
+
+    while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+        $onePlayer = (object) [
+            'id' => $row['id'],
+            'pseudo' => $row['pseudo'],
+            'level' => $row['level'],
+            'description' => $row['description'],
+            'is_online' => $row['is_online'],
+            'is_mj' => $row['is_mj'],
+            'date_derniere_connexion' => $row['date_derniere_connexion'],
+            'date_creation' => $row['date_creation']
+        ];
+        array_push($playersOfGame, $onePlayer);
+    }
+
+    $db = null;
+    echo json_encode($playersOfGame);
 }
 
 ?>

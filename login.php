@@ -37,9 +37,9 @@ require_once("php/config.php");
                 <section id="signin">
                   <div class="front">
                     <h1>Exister</h1>
-                        <input value="test" class="login-signin-input" type="text" id="signin-inputUsername" placeholder="login" required>
-                        <input value="test" class="login-signin-input" type="password" id="signin-inputPassword" placeholder="password" required>
-                        <input value="test" class="login-signin-input" type="pseudo" id="signin-inputPseudo" placeholder="pseudo" required>
+                        <input class="login-signin-input" type="text" id="signin-inputUsername" placeholder="login" required>
+                        <input class="login-signin-input" type="password" id="signin-inputPassword" placeholder="password" required>
+                        <input class="login-signin-input" type="pseudo" id="signin-inputPseudo" placeholder="pseudo" required>
                         <button id="signin-btn">Exister</button>
                    
                   </div>
@@ -54,9 +54,9 @@ require_once("php/config.php");
                 <section id="login">
                   <div class="front">
                     <h1>Incarner</h1>
-                        <input class="login-signin-input" value="Falzen" type="text" id="login-inputUsername" placeholder="login" required>
-                        <input class="login-signin-input" value="Falzen" type="password" id="login-inputPassword" placeholder="password" required>
-                        <input class="login-signin-input" value="Falzen" type="password" id="login-inputPseudo" placeholder="pseudo" required>
+                        <input class="login-signin-input" value="test" type="text" id="login-inputUsername" placeholder="login" required>
+                        <input class="login-signin-input" value="test" type="password" id="login-inputPassword" placeholder="password" required>
+                        <input class="login-signin-input" value="test" type="password" id="login-inputPseudo" placeholder="pseudo" required>
                         <button id="login-btn">Incarner</button>
                    
                   </div>

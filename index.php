@@ -78,11 +78,12 @@ session_start();
     <section id="action">
       <div id="chatContainer">
         <div id="chatContent">
-          <ul id="chatMessages" class="scroll-style-1" style="background-image:url(img/ambiances/fireplace_gif.webp);">
-          </ul>
+          <ol id="chatMessages" class="scroll-style-1" style="background-image:url(img/ambiances/fireplace_gif.webp);">
+          </ol>
           <div id="chatActions">
             <input type="text" id="chatInput" />
             <button id="chatSend">&nbsp;</button>
+            <button id="refreshChat_TEMP">refreshChat_TEMP</button>
           </div>
 
           <div id="rolls-container">

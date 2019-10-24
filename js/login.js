@@ -70,8 +70,8 @@ function tryLogin(usernameInput, passwordInput, pseudoInput) {
         },
         success: function (resultat, statut, erreur) {
             console.log('tryLogin -> success');
-            var res = JSON.parse(resultat);
 			console.log('resultat : ', resultat);
+            var res = JSON.parse(resultat);
 			console.log('statut : ', statut);
 			console.log('erreur : ', erreur);
         	if(res.code == 'nope') {
