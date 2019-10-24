@@ -5,7 +5,7 @@ $(document).ready(function() {
 	}).on('mouseup', '#signin,#login', function(ev) {
 		openBook();
 		ev.stopPropagation();
-	}).on('mouseup', 'html', function(ev) {
+	}).on('mousedown', 'html', function(ev) {
 		closeBook();
 		ev.stopPropagation();
 	}).on('focus', '#inputUsername', function(ev) {
@@ -27,14 +27,7 @@ $(document).ready(function() {
 			$('#signin').addClass('not-watched').removeClass('watched');
 		}
 	});
-/*
- #pageContent.is-open #signin {
-    transform: rotateY(35deg) !important;
-}
- #pageContent.is-open #login {
-    transform: rotateY(-35deg) !important;
-}
-*/
+
 
 	$('button#login-btn').on('click', function() {
 		var usernameInput = $('#login-inputUsername').val().trim();

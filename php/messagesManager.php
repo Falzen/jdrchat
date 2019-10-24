@@ -27,15 +27,45 @@ if(isset($_REQUEST["action"]) && !empty($_REQUEST["action"])) {
                 }
         break;
 
-        case 'updateNoteInput' :
-                if(isset($_REQUEST["nid"]) && !empty($_REQUEST["nid"])
-                    && isset($_REQUEST["notes"]) && !empty($_REQUEST["notes"])) {
-                    $nid = $_REQUEST["nid"];
-                    $notes = $_REQUEST["notes"];
-                    updateNotes($nid, $notes);
-                } else {
-                    echo "ERROR messagesManager.php getMessagesByGameId(gameid) : gameid not received";
-                }
+        case 'upsertNoteInput' :
+            if(isset($_REQUEST["nid"]) && !empty($_REQUEST["nid"])
+                && isset($_REQUEST["notes"]) && !empty($_REQUEST["notes"])
+            ) {
+                $nid = $_REQUEST["nid"];
+                $notes = $_REQUEST["notes"];
+                updateNotes($nid, $notes);
+            } 
+            else if(isset($_REQUEST["gid"]) && !empty($_REQUEST["gid"])
+                && isset($_REQUEST["notes"]) && !empty($_REQUEST["notes"])
+            ) {
+                $gid = $_REQUEST["gid"];
+                $uid = $_SESSION['current_user']->id;
+                $notes = $_REQUEST["notes"];
+                saveNotes($uid, $gid, $notes);
+                
+            } else {
+                echo "ERROR messagesManager.php getMessagesByGameId(gameid) : gameid not received";
+            }
+        break;
+
+        case 'saveMessage' :
+            if(isset($_REQUEST["type"]) && !empty($_REQUEST["type"])
+                && isset($_REQUEST["player_id"]) && !empty($_REQUEST["player_id"])
+                && isset($_REQUEST["date_creation_db"]) && !empty($_REQUEST["date_creation_db"])
+                && isset($_REQUEST["pseudo"]) && !empty($_REQUEST["pseudo"])
+                && isset($_REQUEST["msg_content"]) && !empty($_REQUEST["msg_content"])) {
+                $msgData = (object) [
+                    'type' => $_REQUEST['type'],
+                    'player_id' => $_REQUEST['player_id'],
+                    'date_creation_db' => $_REQUEST['date_creation_db'],
+                    'pseudo' => $_REQUEST['pseudo'],
+                    'msg_content' => $_REQUEST['msg_content']
+                ];
+                // could be htmlspecialchars for msg_cotent to prevent imgs and gifs
+                saveMessage($msgData);
+            } else {
+                echo "ERROR messagesManager.php getMessagesByGameId(gameid) : gameid not received";
+            }
         break;
 
         default:
@@ -90,9 +120,9 @@ function getMessagesByGameId($gameid) {
 
 
 function getNotesByGameIdAndPlayerId($gameid, $playerid) {
-        $db = getConn();
+    $db = getConn();
 
-    $thePlayerNotes;
+    $thePlayerNotes = null;
     $query = "SELECT id,";
         $query .= " html_content,";
         $query .= " player_id,";
@@ -138,5 +168,17 @@ function updateNotes($nid, $notes) {
     echo "updateNotes réussie.";
 }
 
+function saveNotes($uid, $gid, $notes) {
+    $db = getConn();
+    $stmtInsert = $db->prepare("INSERT INTO player_notes (player_id, game_id, html_content) VALUES (?, ?, ?)");
+    $stmtInsert->execute(array($uid, $gid, $notes));
+    $db = null;
+}
 
+function saveMessage($data) {
+    $db = getConn();
+    $stmtInsert = $db->prepare("INSERT INTO chat_messages (player_id, jeu_id, msg_content) VALUES (?, ?, ?)");
+    $stmtInsert->execute(array($data->player_id, $data->jeu_id, $data->msg_content));
+    $db = null;
+}
 ?>

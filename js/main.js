@@ -6,7 +6,9 @@ const $participantsList = $('#participantsList');
 const $noteInput = $('#noteInput');
 var CURRENT_PLAYER;
 //const CHAT_COLORS = ['#697196','#966988','#968E69','#699677'];
-const CHAT_COLORS = ['#e50064','#954a97','#009ee3','#13a538','#0863b5','#fec600','#f39100','#e3001f'];
+// const CHAT_COLORS = ['#e50064','#954a97','#009ee3','#13a538','#0863b5','#fec600','#f39100','#e3001f'];
+const CHAT_COLORS = ['#3cb44b', '#ffe119', '#4363d8', '#911eb4', '#46f0f0', '#f032e6', '#bcf60c', '#fabebe', '#008080', '#e6beff', '#aaffc3'];
+
 /*var chart_colors = new Map();
 chart_colors.set('darkblueish', '#0863b5');
 chart_colors.set('yellowish', '#fec600');
@@ -17,26 +19,6 @@ chart_colors.set('violetish', '#954a97');
 chart_colors.set('lightblueish', '#009ee3');
 chart_colors.set('greenish', '#13a538');*/
 
-const FAKE_players = [
-	{
-		id : 1,
-		pseudo : 'Falzen',
-		level : '1',
-		description : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla leo turpis, pulvinar et pulvinar eu, elementum quis erat. Donec faucibus elit vel porta tincidunt.'
-	},
-	{
-		id : 2,
-		pseudo : 'Freyggen',
-		level : '2',
-		description : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla leo turpis, pulvinar et pulvinar eu, elementum quis erat. Donec faucibus elit vel porta tincidunt. Mauris vulputate ornare purus, id aliquet odio malesuada eu.'
-	},
-	{
-		id : 3,
-		pseudo : 'Démonique',
-		level : '3',
-		description : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla leo turpis, pulvinar et pulvinar eu, elementum quis erat. Donec faucibus elit vel porta tincidunt. Mauris vulputate ornare purus, id aliquet odio malesuada eu. Aliquam tempor, mauris nec venenatis tincidunt, libero lacus feugiat elit, sit amet dictum erat dui id enim. Integer tempor velit vitae tortor fermentum dictum. Morbi condimentum euismod nibh sed pulvinar. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla leo turpis, pulvinar et pulvinar eu, elementum quis erat. Donec faucibus elit vel porta tincidunt. Mauris vulputate ornare purus, id aliquet odio malesuada eu. Aliquam tempor, mauris nec venenatis tincidunt, libero lacus feugiat elit, sit amet dictum erat dui id enim. Integer tempor velit vitae tortor fermentum dictum. Morbi condimentum euismod nibh sed pulvinar. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla leo turpis, pulvinar et pulvinar eu, elementum quis erat. Donec faucibus elit vel porta tincidunt. Mauris vulputate ornare purus, id aliquet odio malesuada eu. Aliquam tempor, mauris nec venenatis tincidunt, libero lacus feugiat elit, sit amet dictum erat dui id enim. Integer tempor velit vitae tortor fermentum dictum. Morbi condimentum euismod nibh sed pulvinar.'
-	}
-];
 var current_players = [];
 var d100_critical_fail_amount = 90;
 var d100_critical_win_amount = 10;
@@ -101,12 +83,9 @@ function createGameListItemDOM(gameData) {
 	return oneGameDOM;
 }
 //TODO fake data
-function setPlayer() {
-	CURRENT_PLAYER = {
-		id : 1,
-		pseudo : 'Falzen',
-		level : '99'
-	}
+function setPlayer(p) {
+	var currentUserJson = $('#currentUserJson').text();
+	CURRENT_PLAYER = JSON.parse(currentUserJson);
 }
 
 function fetchChatMessage() {
@@ -118,7 +97,10 @@ function fetchChatMessage() {
 	return newChatMessageData;
 }
 
-function writeChatMessages(data) {
+function writeChatMessages(data, shouldSave) {
+	if(shouldSave == null || shouldSave == 'undefined') {
+		shouldSave = false;
+	}
 	// no check for data!=null cause always a list (at least empty)
 	if(!data[0]) {
 		flashChatInput();
@@ -133,11 +115,37 @@ function writeChatMessages(data) {
 	    allMessagesDOM += newMessage;
 	}
     $chatMessages.append(allMessagesDOM);
+    if(shouldSave) {
+    	saveNewMessage(data);
+    }
     $chatInput.val('');
     scrollToChatBottom();
 
 }
 
+
+function saveNewMessage(data) {
+
+	var notesId = $noteInput[0].dataset.noteid;
+    $.ajax({
+        type: 'POST',
+        url: 'php/messagesManager.php',
+        data: {
+        	action: 'saveMessage',
+        	data: data,
+        },
+        success: function (resultat, statut, erreur) {
+            console.log('updateNoteInput -> success');
+        },
+        error: function(resultat, statut, erreur) {
+			console.log('%c updateNoteInput JS -> error : ', 'color: tomato; font-size: 14px;');
+			console.log('resultat : ', resultat);
+			console.log('statut : ', statut);
+			console.log('erreur : ', erreur);
+
+        }
+    });
+}
 
 function flashChatInput() {
 	$chatInput.css('box-shadow', '0 0 5px 0px red inset');
@@ -164,8 +172,6 @@ function closeAllPlayersInfo() {
 function setEventListeners() {
 	
 	$(document).on('click', 'li.one-game', function(ev) {
-		var chosenGameId = ev.currentTarget.dataset.gameid;
-		setCurrentGame(chosenGameId);
 	})
 	.on('click', '#chatSend', function(ev) {
 		var newMsgList = [];
@@ -214,6 +220,7 @@ function makePlayerMessageObject(msgType, msgContent) {
 		type : msgType,
 		player_id : CURRENT_PLAYER.id,
 		date_creation : makeNiceDate(new Date()),
+		date_creation_db : new Date(),
 		pseudo : CURRENT_PLAYER.pseudo,
 		msg_content : msgContent
 	};
@@ -229,8 +236,10 @@ function getNotesByGameIdAndPlayerId(gid, pid) {
 			gameid: gid
 		},
 		success: function (resultat, statut, erreur) {
-			playerNotes = JSON.parse(resultat);
-			setPlayerNotes(playerNotes);
+			if(resultat != 'null') {
+				playerNotes = JSON.parse(resultat);
+				setPlayerNotes(playerNotes);
+			}
 		},
 		error: function(resultat, statut, erreur) {
 			console.log('%c getGames JS -> error : ', 'color: tomato; font-size: 14px;');
@@ -248,14 +257,17 @@ function setPlayerNotes(notes) {
 }
 
 function updateNoteInput() {
+	debugger;
 	var notes = $noteInput.html();
-	var notesId = $noteInput[0].dataset.noteid;
+	var notesId = $noteInput[0].dataset.no
+	var gameid = chosenGameId;
     $.ajax({
         type: 'POST',
         url: 'php/messagesManager.php',
         data: {
-        	action: 'updateNoteInput',
+        	action: 'upsertNoteInput',
         	nid: notesId,
+        	gid: gameid,
         	notes: notes
         },
         success: function (resultat, statut, erreur) {
@@ -295,9 +307,8 @@ function setCurrentTab(tabid) {
 }
 
 function init() {
-
-	getAllPlayers();
 	setPlayer();
+	getAllPlayers();
 	getGames();
 	chosenGameId = 1;
 	getMessagesByGameId(chosenGameId);
@@ -360,8 +371,6 @@ function getAllPlayers() {
 		},
 		success: function (resultat, statut, erreur) {
 			current_players = JSON.parse(resultat);
-			//TODO delete that
-			current_players = current_players.concat(current_players);
 			generatePlayers(current_players);
 		},
 		error: function(resultat, statut, erreur) {

@@ -37,6 +37,14 @@ session_start();
 
 <img src="img/ambiances/fireplace_gif.webp" alt="Relaxe" />
 -->
+
+<div id="currentUserJson" class="very-hidden">
+  <?php
+    if (isset( $_SESSION['current_user']) && $_SESSION['current_user'] !== null) {
+      echo json_encode($_SESSION['current_user']);
+    }
+  ?>
+</div>
 <div id="pageContainer">
   <a id="logoutLink" href="logout.php" title="logout">yeet</a>
   <div id="pageContent" class="welcome">
