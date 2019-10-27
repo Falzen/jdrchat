@@ -27,8 +27,6 @@ $(document).ready(function() {
 			$('#signin').addClass('not-watched').removeClass('watched');
 		}
 	});
-
-
 	$('button#login-btn').on('click', function() {
 		var usernameInput = $('#login-inputUsername').val().trim();
 		var passwordInput = $('#login-inputPassword').val().trim();
@@ -70,15 +68,12 @@ function tryLogin(usernameInput, passwordInput, pseudoInput) {
         },
         success: function (resultat, statut, erreur) {
             console.log('tryLogin -> success');
-			console.log('resultat : ', resultat);
             var res = JSON.parse(resultat);
-			console.log('statut : ', statut);
-			console.log('erreur : ', erreur);
         	if(res.code == 'nope') {
         		doErrorLogin();
         	} 
         	else if(res.code = 'aaight') {
-        		doRedirectToWelcome();
+        		doRedirectTo("gameChoice.php");
         	}
         },
         error: function(resultat, statut, erreur) {
@@ -86,11 +81,9 @@ function tryLogin(usernameInput, passwordInput, pseudoInput) {
 			console.log('resultat : ', resultat);
 			console.log('statut : ', statut);
 			console.log('erreur : ', erreur);
-
         }
 	});
 }
-
 function trySignin(usernameInput, passwordInput, pseudoInput) {
 	$.ajax({
         type: 'POST',
@@ -107,13 +100,12 @@ function trySignin(usernameInput, passwordInput, pseudoInput) {
 			console.log('statut : ', statut);
 			console.log('erreur : ', erreur);
             var res = JSON.parse(resultat);
-			console.log('res : ', res);
         	if(res.code == 'PSEUDO_ALREADY_TAKEN') {
         		alert('PSEUDO_ALREADY_TAKEN');
         		doErrorSignin();
         	} 
         	else if(res.code = 'aaight') {
-        		doRedirectToWelcome();
+        		doRedirectTo("gameChoice.php");
         	}
         },
         error: function(resultat, statut, erreur) {
@@ -121,11 +113,9 @@ function trySignin(usernameInput, passwordInput, pseudoInput) {
 			console.log('resultat : ', resultat);
 			console.log('statut : ', statut);
 			console.log('erreur : ', erreur);
-
         }
 	});
 }
-
 function doErrorLogin() {
 	$('#login-inputUsername').val('').addClass('input-error');
 	$('#login-inputPassword').val('').addClass('input-error');
@@ -136,8 +126,6 @@ function doErrorSignin() {
 	$('#signin-inputPseudo').val('').addClass('input-error');
 }
 function doRedirectToWelcome() {
-	// $('#inputUsername').val('');
-	// $('#inputPassword').val('');
 	setTimeout(function() {
 		closeBook();
 	}, 200);
@@ -145,7 +133,17 @@ function doRedirectToWelcome() {
 		hideEverything();	
 	}, 500);
 	setTimeout(function() {
-		//alert('nav');
 		window.location.href = "index.php";	
+	}, 1800);
+}
+function doRedirectTo(pagename) {
+	setTimeout(function() {
+		closeBook();
+	}, 200);
+	setTimeout(function() {
+		hideEverything();	
+	}, 500);
+	setTimeout(function() {
+		window.location.href = pagename;	
 	}, 1800);
 }

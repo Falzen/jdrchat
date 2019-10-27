@@ -1,11 +1,9 @@
 <?php
 session_start();
 require_once("config.php"); 
-
 if(isset($_REQUEST["action"]) && !empty($_REQUEST["action"])) {
     $action = $_REQUEST["action"];
     switch($action) {
-
         case "tryLogin" :
         if(
             isset($_REQUEST["usernameInput"]) 
@@ -15,13 +13,11 @@ if(isset($_REQUEST["action"]) && !empty($_REQUEST["action"])) {
             && isset($_REQUEST["pseudoInput"])
             && !empty($_REQUEST["pseudoInput"])
         ){
-
             $usernameInput = htmlspecialchars($_REQUEST['usernameInput']);
             $passwordInput = htmlspecialchars($_REQUEST['passwordInput']);
             $pseudoInput = htmlspecialchars($_REQUEST['pseudoInput']);
             tryLogin($usernameInput, $passwordInput, $pseudoInput);
         }
-        
         break;
         case "trySignin" :
         if(
@@ -37,17 +33,12 @@ if(isset($_REQUEST["action"]) && !empty($_REQUEST["action"])) {
             $pseudoInput = htmlspecialchars($_REQUEST['pseudoInput']);
             trySignin($usernameInput, $passwordInput, $pseudoInput);
         }
-        
         break;
-
         default:
         echo "nothing happened";
         break;
-
     }// end switch action
 }// end if isset action
-
-
 function trySignin($usernameInput, $passwordInput, $pseudoInput) {
     $FAKE_DESCRIPTION = 'TODO';
     $return = (object)[
@@ -55,11 +46,9 @@ function trySignin($usernameInput, $passwordInput, $pseudoInput) {
         'data' => null
     ];
     $db = getConn();
-
     //check si pseudo déjà pris.
     $stmtCheck = $db->prepare("SELECT id, pseudo FROM players WHERE pseudo = ?");
     $stmtCheck->execute(array($pseudoInput));
-
     $userCheck = null;
     $rowCheck = $stmtCheck->fetch();
     if ($rowCheck != null) {
@@ -67,18 +56,14 @@ function trySignin($usernameInput, $passwordInput, $pseudoInput) {
           'id' => $rowCheck['id'],
           'pseudo' => $rowCheck['pseudo']
         ];
-
         $return->code = 'PSEUDO_ALREADY_TAKEN';
         $return->data = $userCheck;
-
         echo json_encode($return);
-    die();
+        die();
     }
-
     // INSERT 
     $passwordInputHashed = md5($passwordInput);
     $levelOne = 1;
-    
     $stmtInsert = $db->prepare("INSERT INTO players (username, password, pseudo, description, level) VALUES (?, ?, ?, ?, ?)");
     $stmtInsert->execute(array($usernameInput, $passwordInputHashed, $pseudoInput, $FAKE_DESCRIPTION, $levelOne));
 
@@ -90,7 +75,6 @@ function trySignin($usernameInput, $passwordInput, $pseudoInput) {
     $stmtRetreive->bindParam(1, $usernameInput);
     $stmtRetreive->bindParam(2, $passwordInputHashed);
     $stmtRetreive->execute();
-
     $user = null;
     $rowRetreive = $stmtRetreive->fetch();
     if ($rowRetreive != null) {
@@ -114,11 +98,21 @@ function trySignin($usernameInput, $passwordInput, $pseudoInput) {
         $return->code = 'user inserted but not retreived... yeet.';
         $return->data = null;
     }
+    // get generic chatroom id
+    $chatroomRetreive = $db->prepare("SELECT id FROM jeu WHERE nom = ?");
+    $chatroomRetreive->execute(array('Chatroom'));
+    $chatroomId = $chatroomRetreive->fetch()['id'];
+    // set link to the chatroom
+    $chatroomSubscriptionInsert = $db->prepare("INSERT INTO jeuxplayersxref (player_id, is_mj, game_id) VALUES (?, ?, ?)");
+    $chatroomSubscriptionInsert->execute(array(
+        $_SESSION['current_user']->id, 
+        0, 
+        $chatroomId
+    ));
+    $chatroomSubscriptionInsert->execute();
     $db = null;
     echo json_encode($return);
-    
 }
-
 function tryLogin($usernameInput, $passwordInput, $pseudoInput) {
     $return = (object)[
         'code' => '',
@@ -158,25 +152,7 @@ function tryLogin($usernameInput, $passwordInput, $pseudoInput) {
     }
     $db = null;
     echo json_encode($return);
-
 }
-
-
-/*
-function updateLastConnectionDate() {
-    $db = getConn();
-    date_default_timezone_set('Europe/Paris');
-    $now = time();
-    $mydate = date('Y-m-d H:i:s', $now);
-    $updateUser = "UPDATE players SET date_derniere_connexion = ? WHERE id = ?";
-    $stmt = $db->prepare($updateUser);
-
-    $stmt->bindParam(1, $mydate);
-    $stmt->bindParam(2, $_SESSION['current_user']->id);
-    $stmt->execute();
-    $db = null;
-}
-*/
 function updateLastConnectionDateAndSetOnline() {
     $db = getConn();
     $uid = $_SESSION['current_user']->id;
@@ -190,7 +166,6 @@ function updateLastConnectionDateAndSetOnline() {
     $stmt->execute();
     $db = null;
 }
-
 function setOffline() {
     $db = getConn();
     $uid = $_SESSION['current_user']->id;
@@ -198,5 +173,4 @@ function setOffline() {
     $stmt->execute(array($uid, 0));
     $db = null;
 }
-
 ?>
