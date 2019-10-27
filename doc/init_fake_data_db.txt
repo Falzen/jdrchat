@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.6deb4
+-- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
--- Host: db5000202677.hosting-data.io
--- Generation Time: Oct 22, 2019 at 07:41 AM
--- Server version: 5.7.27-log
--- PHP Version: 7.0.33-0+deb9u5
+-- Hôte : 127.0.0.1:3306
+-- Généré le :  Dim 27 oct. 2019 à 19:06
+-- Version du serveur :  5.7.26
+-- Version de PHP :  7.2.18
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -17,185 +19,178 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `dbs197639`
+-- Base de données :  `jdr`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `chat_messages`
+-- Structure de la table `chat_messages`
 --
 
-CREATE TABLE `chat_messages` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `chat_messages`;
+CREATE TABLE IF NOT EXISTS `chat_messages` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `player_id` int(11) NOT NULL,
-  `jeu_id` int(11) NOT NULL,
+  `game_id` int(11) NOT NULL,
   `date_creation` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `msg_content` text COLLATE utf8_unicode_ci
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `msg_content` text COLLATE utf8_unicode_ci,
+  `type` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `pseudo` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `date_creation_front` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `player_id` (`player_id`),
+  KEY `jeu_id` (`game_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `chat_messages`
+-- Déchargement des données de la table `chat_messages`
 --
 
-INSERT INTO `chat_messages` (`id`, `player_id`, `jeu_id`, `date_creation`, `msg_content`) VALUES
-(1, 1, 1, '2019-10-20 06:37:20', 'je suis Falzen dans le jeu 1'),
-(2, 2, 1, '2019-10-20 06:37:20', 'je suis Freyggen dans le jeu 1 '),
-(3, 3, 1, '2019-10-20 06:37:20', 'Aliquam scelerisque luctus tortor, ac faucibus tortor pulvinar euismod.'),
-(4, 1, 1, '2019-10-20 06:37:20', 'Vivamus interdum orci et semper aliquet.'),
-(5, 2, 1, '2019-10-20 06:37:20', 'Aliquam scelerisque luctus tortor, ac faucibus tortor pulvinar euismod.'),
-(6, 2, 1, '2019-10-20 06:37:20', 'Vivamus interdum orci et semper aliquet.'),
-(7, 3, 1, '2019-10-20 06:37:20', 'Aliquam scelerisque luctus tortor, ac faucibus tortor pulvinar euismod.'),
-(8, 1, 2, '2019-10-20 06:37:20', 'Vivamus interdum orci et semper aliquet.'),
-(9, 1, 2, '2019-10-20 06:37:20', 'Aliquam scelerisque luctus tortor, ac faucibus tortor pulvinar euismod.'),
-(10, 3, 1, '2019-10-20 06:37:20', 'Vivamus interdum orci et semper aliquet.'),
-(11, 2, 1, '2019-10-20 06:37:20', 'Aliquam scelerisque luctus tortor, ac faucibus tortor pulvinar euismod.'),
-(12, 1, 1, '2019-10-20 06:37:20', 'Vivamus interdum orci et semper aliquet.'),
-(13, 3, 1, '2019-10-20 06:37:20', 'Aliquam scelerisque luctus tortor, ac faucibus tortor pulvinar euismod.'),
-(14, 3, 1, '2019-10-20 06:37:20', 'Vivamus interdum orci et semper aliquet.'),
-(15, 2, 1, '2019-10-20 06:37:20', 'Aliquam scelerisque luctus tortor, ac faucibus tortor pulvinar euismod.'),
-(16, 2, 1, '2019-10-20 06:37:20', 'Vivamus interdum orci et semper aliquet.'),
-(17, 2, 1, '2019-10-20 06:37:20', 'Aliquam scelerisque luctus tortor, ac faucibus tortor pulvinar euismod.'),
-(18, 1, 1, '2019-10-20 06:38:04', 'Mauris dictum interdum odio, ac facilisis nunc dictum ut.'),
-(19, 2, 2, '2019-10-20 06:38:04', 'je suis Freyggen dans le jeu 2'),
-(20, 1, 2, '2019-10-20 06:38:04', 'je suis Falzen dans le jeu 2'),
-(21, 2, 2, '2019-10-20 06:38:04', 'Aliquam scelerisque luctus tortor, ac faucibus tortor pulvinar euismod.'),
-(22, 2, 2, '2019-10-20 06:38:04', 'Vivamus interdum orci et semper aliquet.'),
-(23, 1, 2, '2019-10-20 06:38:04', 'Vivamus interdum orci et semper aliquet.'),
-(24, 1, 2, '2019-10-20 06:38:04', 'Aliquam scelerisque luctus tortor, ac faucibus tortor pulvinar euismod.'),
-(25, 2, 2, '2019-10-20 06:38:04', 'Aliquam scelerisque luctus tortor, ac faucibus tortor pulvinar euismod.'),
-(26, 1, 2, '2019-10-20 06:38:04', 'Vivamus interdum orci et semper aliquet.'),
-(27, 2, 2, '2019-10-20 06:38:04', 'Aliquam scelerisque luctus tortor, ac faucibus tortor pulvinar euismod.'),
-(28, 2, 2, '2019-10-20 06:38:04', 'Vivamus interdum orci et semper aliquet.'),
-(29, 2, 2, '2019-10-20 06:38:04', 'Aliquam scelerisque luctus tortor, ac faucibus tortor pulvinar euismod.');
+INSERT INTO `chat_messages` (`id`, `player_id`, `game_id`, `date_creation`, `msg_content`, `type`, `pseudo`, `date_creation_front`) VALUES
+(1, 4, 1, '2019-10-27 02:15:37', 'dqzdzq', 'chatmsg', 'test', '27/10/2019'),
+(2, 4, 1, '2019-10-27 02:15:39', 'dzqdqzdzq', 'chatmsg', 'test', '27/10/2019'),
+(3, 4, 3, '2019-10-27 03:38:40', 'fds fds fds', 'chatmsg', 'test', '27/10/2019'),
+(4, 4, 1, '2019-10-27 03:39:03', 'zzzzz', 'chatmsg', 'test', '27/10/2019'),
+(5, 4, 3, '2019-10-27 03:41:49', 'game 3 here ?', 'chatmsg', 'test', '27/10/2019'),
+(6, 4, 2, '2019-10-27 03:42:03', 'zzzz', 'chatmsg', 'test', '27/10/2019'),
+(7, 4, 2, '2019-10-27 03:42:08', 'dzqdzq', 'chatmsg', 'test', '27/10/2019'),
+(8, 4, 1, '2019-10-27 03:42:14', 'qdqddqdq', 'chatmsg', 'test', '27/10/2019'),
+(9, 4, 1, '2019-10-27 05:50:20', 'd100&nbsp;&nbsp; -->  &nbsp;&nbsp;\'79\'', 'diceroll', 'test', '27/10/2019'),
+(10, 4, 2, '2019-10-27 15:17:25', 'qqqq', 'chatmsg', 'test', '27/10/2019'),
+(11, 4, 1, '2019-10-27 17:08:49', 'sdsq', 'chatmsg', 'test', '27/10/2019'),
+(12, 4, 1, '2019-10-27 17:08:51', 'd100&nbsp;&nbsp; -->  &nbsp;&nbsp;\'33\'', 'diceroll', 'test', '27/10/2019'),
+(13, 4, 1, '2019-10-27 17:08:51', 'd100&nbsp;&nbsp; -->  &nbsp;&nbsp;\'53\'', 'diceroll', 'test', '27/10/2019'),
+(14, 4, 1, '2019-10-27 17:11:10', 'qq', 'chatmsg', 'test', '27/10/2019'),
+(15, 1, 2, '2019-10-27 17:11:26', 'qqq', 'chatmsg', 'Falzen', '27/10/2019'),
+(16, 4, 2, '2019-10-27 17:11:53', 'sd', 'chatmsg', 'test', '27/10/2019'),
+(17, 4, 2, '2019-10-27 17:11:55', 'd100&nbsp;&nbsp; -->  &nbsp;&nbsp;\'60\'', 'diceroll', 'test', '27/10/2019'),
+(18, 4, 4, '2019-10-27 17:23:50', 'eee', 'chatmsg', 'test', '27/10/2019'),
+(19, 16, 4, '2019-10-27 17:55:16', 'd100&nbsp;&nbsp; -->  &nbsp;&nbsp;\'36\'', 'diceroll', 'kkk', '27/10/2019'),
+(20, 4, 2, '2019-10-27 18:30:49', 'dqdzqdz', 'chatmsg', 'test', '27/10/2019'),
+(21, 4, 2, '2019-10-27 18:30:50', 'd20&nbsp;&nbsp; -->  &nbsp;&nbsp;\'7\'', 'diceroll', 'test', '27/10/2019'),
+(22, 4, 2, '2019-10-27 18:30:50', 'd100&nbsp;&nbsp; -->  &nbsp;&nbsp;\'90\' crit fail. Ouch !', 'diceroll', 'test', '27/10/2019');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `jeu`
+-- Structure de la table `jeu`
 --
 
-CREATE TABLE `jeu` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `jeu`;
+CREATE TABLE IF NOT EXISTS `jeu` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `nom` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `description` text COLLATE utf8_unicode_ci NOT NULL,
-  `regles` text COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `regles` text COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `jeu`
+-- Déchargement des données de la table `jeu`
 --
 
 INSERT INTO `jeu` (`id`, `nom`, `description`, `regles`) VALUES
-(1, 'Jeu test 01', 'Description du Jeu test 01', 'Les règles du Jeu test 01'),
-(2, 'Jeu test 02', 'Description du Jeu test 02', 'Les règles du Jeu test 02');
+(1, 'Jeu test 01', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur feugiat elementum libero, gravida pretium velit eleifend ac. Donec porttitor cursus dolor eget sodales. Duis id enim nulla. Maecenas eleifend semper mauris, quis mollis tellus congue sed. Phasellus ac sem sollicitudin, consequat ex et, porta dui. Vivamus sit amet lorem a nisl hendrerit dictum. Donec non elit vitae leo ultricies aliquam. Donec ullamcorper arcu quis dolor hendrerit, et interdum risus condimentum. Praesent nec magna in leo consequat elementum. Donec non commodo orci. Integer eu ante sit amet arcu volutpat malesuada. Donec vulputate velit quis urna imperdiet finibus ut et justo.\r\n\r\nProin at efficitur erat, vitae pellentesque sem. Nunc pretium elit ut metus accumsan, ut elementum nisl aliquam. Proin venenatis, nisi in lacinia consequat, arcu sapien faucibus nibh, id gravida justo dolor vitae tortor. Pellentesque et turpis varius, facilisis ante vitae, fringilla purus. Vestibulum risus quam, varius sed turpis eget, blandit bibendum tortor. Suspendisse at volutpat sem, in pulvinar massa. Aenean et dolor sit amet nulla placerat semper ut quis neque. Mauris fringilla eros ac justo sollicitudin, vitae iaculis quam gravida. Nullam porta, libero eget rhoncus semper, lacus mi pharetra enim, in posuere dolor dui nec massa. Fusce ut ante vel magna gravida tristique.\r\n\r\nVivamus nec nunc a augue vulputate suscipit ac eu justo. Suspendisse est neque, commodo non mi nec, mollis sodales erat. Proin lacinia est metus, ut ullamcorper felis ultricies vitae. Curabitur id malesuada arcu. Integer vehicula tempus ultrices. Nullam iaculis dolor rhoncus ullamcorper ornare. Curabitur venenatis ullamcorper augue, quis semper mauris interdum eu. Etiam pellentesque pharetra libero a scelerisque. Fusce congue tincidunt lorem, nec tempor mi porta non.\r\n\r\nSuspendisse ultrices, nisl id accumsan facilisis, odio lacus bibendum nulla, rhoncus porta dolor augue et felis. Morbi eget mollis tellus. Maecenas imperdiet hendrerit neque, consectetur tincidunt lectus fermentum a. Aenean eu pulvinar quam. Pellentesque eleifend, dui non euismod venenatis, metus nulla lobortis nulla, vitae sodales metus metus sed ligula. Donec et nisl aliquam, malesuada ipsum faucibus, commodo eros. Aenean egestas lectus non est laoreet consequat. Praesent vulputate massa lorem, vel semper arcu ullamcorper id. Donec ut imperdiet lorem.', 'Les règles du Jeu test 01'),
+(2, 'Jeu test 02', 'Praesent aliquet ante ante. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Phasellus blandit metus vitae diam commodo, sit amet mollis justo sodales. Proin cursus facilisis erat, ut auctor ligula congue eget. Aenean arcu libero, molestie in augue quis, iaculis finibus leo. Cras iaculis sollicitudin lectus, eget volutpat quam ornare id. Nulla fermentum rhoncus purus vitae sagittis. Quisque consectetur odio id ex facilisis, id porttitor purus bibendum. Aliquam ut lacus euismod, dapibus neque nec, sollicitudin nibh. Vivamus justo eros, pellentesque sed tortor pellentesque, laoreet luctus ex. Cras at venenatis erat, vel bibendum ligula. Aenean pellentesque erat nec enim vulputate, sed ornare libero sagittis. Fusce porta vel sem suscipit rutrum. Ut sit amet congue ipsum.\r\n\r\nEtiam aliquet egestas ultrices. Fusce gravida erat non nisi elementum, vitae dapibus urna vulputate. Sed et mi pellentesque, porta ex iaculis, vestibulum nisl. Donec accumsan eros non neque elementum auctor. Suspendisse gravida aliquet nisl, vitae fringilla quam viverra egestas. Proin lectus risus, ultrices quis felis id, imperdiet molestie ex. Etiam ut nibh a nunc faucibus rhoncus a ut sapien.\r\n\r\nMorbi in dignissim mauris, quis cursus nisl. Cras eget lacus mattis nisi maximus fringilla. Integer vehicula tempor mi, sed porttitor libero congue non. Vivamus diam mauris, tincidunt sit amet iaculis et, sodales sed mauris. Fusce ac felis et nulla tempus cursus ut at libero. Praesent sed purus vehicula, dapibus neque id, finibus massa. Quisque eget turpis nec nibh sollicitudin dictum sit amet interdum ante. Curabitur aliquam elit convallis lorem pharetra vehicula. Pellentesque pretium elit urna, sed rhoncus magna viverra cursus. Donec vel egestas metus. Morbi elementum suscipit sem, eu posuere est rutrum sed. Donec luctus mauris mauris, quis condimentum felis egestas vel. Nunc quis auctor libero. Ut tortor est, mattis quis scelerisque vitae, dignissim at nisl. Morbi nec mi elementum, fermentum neque vel, consequat sem.', 'Les règles du Jeu test 02'),
+(3, 'Jeu 03 solo', 'Jeu qu\'avec Falzen', ''),
+(4, 'Chatroom', 'Jeu par défaut pour tout nouveau compte', '');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `jeuxplayersxref`
+-- Structure de la table `jeuxplayersxref`
 --
 
-CREATE TABLE `jeuxplayersxref` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `jeuxplayersxref`;
+CREATE TABLE IF NOT EXISTS `jeuxplayersxref` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `player_id` int(11) NOT NULL,
-  `jeu_id` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `is_mj` tinyint(1) NOT NULL DEFAULT '0',
+  `game_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `player_id` (`player_id`),
+  KEY `jeu_id` (`game_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `jeuxplayersxref`
+-- Déchargement des données de la table `jeuxplayersxref`
 --
 
-INSERT INTO `jeuxplayersxref` (`id`, `player_id`, `jeu_id`) VALUES
-(1, 1, 1),
-(2, 2, 1),
-(3, 3, 1),
-(4, 1, 2),
-(5, 2, 2);
+INSERT INTO `jeuxplayersxref` (`id`, `player_id`, `is_mj`, `game_id`) VALUES
+(1, 1, 0, 1),
+(2, 2, 0, 1),
+(3, 3, 0, 1),
+(4, 1, 1, 2),
+(5, 2, 0, 2),
+(6, 4, 1, 1),
+(7, 4, 0, 2),
+(8, 1, 0, 3),
+(9, 1, 0, 4),
+(10, 2, 0, 4),
+(11, 3, 0, 4),
+(12, 4, 0, 4);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `players`
+-- Structure de la table `players`
 --
 
-CREATE TABLE `players` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `players`;
+CREATE TABLE IF NOT EXISTS `players` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `pseudo` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `level` int(11) NOT NULL DEFAULT '1',
   `description` text COLLATE utf8_unicode_ci NOT NULL,
   `username` text COLLATE utf8_unicode_ci NOT NULL,
   `password` text COLLATE utf8_unicode_ci NOT NULL,
   `is_online` tinyint(1) NOT NULL DEFAULT '0',
-  `date_derniere_connexion` timestamp NULL DEFAULT NULL,
-  `date_creation` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `date_derniere_connexion` datetime DEFAULT NULL,
+  `date_creation` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `players`
+-- Déchargement des données de la table `players`
 --
 
 INSERT INTO `players` (`id`, `pseudo`, `level`, `description`, `username`, `password`, `is_online`, `date_derniere_connexion`, `date_creation`) VALUES
-(1, 'Falzen', 1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla leo turpis, pulvinar et pulvinar eu, elementum quis erat. Donec faucibus elit vel porta tincidunt.', 'Falzen', 'Falzen', 1, NULL, '2019-10-20 06:20:00'),
+(1, 'Falzen', 1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla leo turpis, pulvinar et pulvinar eu, elementum quis erat. Donec faucibus elit vel porta tincidunt.', 'Falzen', 'f01870f0701268dbb0d1ea7538ec26e3', 1, '2019-10-27 18:11:18', '2019-10-20 06:20:00'),
 (2, 'Freyggen', 1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla leo turpis, pulvinar et pulvinar eu, elementum quis erat. Donec faucibus elit vel porta tincidunt. Mauris vulputate ornare purus, id aliquet odio malesuada eu.', 'Freyggen', 'Freyggen', 0, NULL, '2019-10-20 06:20:00'),
-(3, 'Démonique', 1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla leo turpis, pulvinar et pulvinar eu, elementum quis erat. Donec faucibus elit vel porta tincidunt. Mauris vulputate ornare purus, id aliquet odio malesuada eu. Aliquam tempor, mauris nec venenatis tincidunt, libero lacus feugiat elit, sit amet dictum erat dui id enim. Integer tempor velit vitae tortor fermentum dictum. Morbi condimentum euismod nibh sed pulvinar.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla leo turpis, pulvinar et pulvinar eu, elementum quis erat. Donec faucibus elit vel porta tincidunt. Mauris vulputate ornare purus, id aliquet odio malesuada eu. Aliquam tempor, mauris nec venenatis tincidunt, libero lacus feugiat elit, sit amet dictum erat dui id enim. Integer tempor velit vitae tortor fermentum dictum. Morbi condimentum euismod nibh sed pulvinar.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla leo turpis, pulvinar et pulvinar eu, elementum quis erat. Donec faucibus elit vel porta tincidunt. Mauris vulputate ornare purus, id aliquet odio malesuada eu. Aliquam tempor, mauris nec venenatis tincidunt, libero lacus feugiat elit, sit amet dictum erat dui id enim. Integer tempor velit vitae tortor fermentum dictum. Morbi condimentum euismod nibh sed pulvinar.', 'Démonique', 'Démonique', 1, NULL, '2019-10-20 06:20:00');
+(3, 'Démonique', 1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla leo turpis, pulvinar et pulvinar eu, elementum quis erat. Donec faucibus elit vel porta tincidunt. Mauris vulputate ornare purus, id aliquet odio malesuada eu. Aliquam tempor, mauris nec venenatis tincidunt, libero lacus feugiat elit, sit amet dictum erat dui id enim. Integer tempor velit vitae tortor fermentum dictum. Morbi condimentum euismod nibh sed pulvinar.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla leo turpis, pulvinar et pulvinar eu, elementum quis erat. Donec faucibus elit vel porta tincidunt. Mauris vulputate ornare purus, id aliquet odio malesuada eu. Aliquam tempor, mauris nec venenatis tincidunt, libero lacus feugiat elit, sit amet dictum erat dui id enim. Integer tempor velit vitae tortor fermentum dictum. Morbi condimentum euismod nibh sed pulvinar.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla leo turpis, pulvinar et pulvinar eu, elementum quis erat. Donec faucibus elit vel porta tincidunt. Mauris vulputate ornare purus, id aliquet odio malesuada eu. Aliquam tempor, mauris nec venenatis tincidunt, libero lacus feugiat elit, sit amet dictum erat dui id enim. Integer tempor velit vitae tortor fermentum dictum. Morbi condimentum euismod nibh sed pulvinar.', 'Démonique', 'Démonique', 0, NULL, '2019-10-20 06:20:00'),
+(4, 'test', 1, 'TODO', 'test', '098f6bcd4621d373cade4e832627b4f6', 1, '2019-10-27 19:56:04', '2019-10-24 19:04:24');
+
+-- --------------------------------------------------------
 
 --
--- Indexes for dumped tables
+-- Structure de la table `player_notes`
 --
 
---
--- Indexes for table `chat_messages`
---
-ALTER TABLE `chat_messages`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `player_id` (`player_id`),
-  ADD KEY `jeu_id` (`jeu_id`);
+DROP TABLE IF EXISTS `player_notes`;
+CREATE TABLE IF NOT EXISTS `player_notes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `html_content` text COLLATE utf8_unicode_ci NOT NULL,
+  `player_id` int(11) NOT NULL,
+  `game_id` int(11) NOT NULL,
+  `last_update_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Indexes for table `jeu`
---
-ALTER TABLE `jeu`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `jeuxplayersxref`
---
-ALTER TABLE `jeuxplayersxref`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `player_id` (`player_id`),
-  ADD KEY `jeu_id` (`jeu_id`);
-
---
--- Indexes for table `players`
---
-ALTER TABLE `players`
-  ADD PRIMARY KEY (`id`);
-
---
--- AUTO_INCREMENT for dumped tables
+-- Déchargement des données de la table `player_notes`
 --
 
---
--- AUTO_INCREMENT for table `chat_messages`
---
-ALTER TABLE `chat_messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
---
--- AUTO_INCREMENT for table `jeu`
---
-ALTER TABLE `jeu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
---
--- AUTO_INCREMENT for table `jeuxplayersxref`
---
-ALTER TABLE `jeuxplayersxref`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
---
--- AUTO_INCREMENT for table `players`
---
-ALTER TABLE `players`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+INSERT INTO `player_notes` (`id`, `html_content`, `player_id`, `game_id`, `last_update_date`) VALUES
+(1, 'Vos notes<div><br></div><div><br></div><div>- ptetre forcer la porte en bas dès qu\'on a un outil (pelle, tuyau...)</div><div><br></div><div>- le mec à l\'air malade (que moi qui ai remarqué)</div><div><br></div><div>- etc...</div>', 1, 1, '2019-10-22 21:43:23'),
+(2, 'hein ?<div><br></div>', 9, 1, '2019-10-24 19:21:55'),
+(3, 'dzqdzq zq d qzdqzdqzdzq', 4, 1, '2019-10-24 23:21:56'),
+(4, 'dzqdzq zq d qzdqzdqzdzqd&nbsp;<div>d q</div><div>zd&nbsp;</div><div>qz</div><div>d qz</div><div>d&nbsp;</div><div>qz&nbsp;</div>', 4, 1, '2019-10-27 01:16:05'),
+(5, 'zdqdqzdqz', 4, 2, '2019-10-27 01:16:13'),
+(6, 'f esf sef es', 4, 4, '2019-10-27 17:23:48'),
+(7, 'zdqdqzdqzd ddd<div>&nbsp;d</div><div>zq d</div><div>zq</div><div>d qz</div><div><br></div>', 4, 2, '2019-10-27 18:30:55');
+COMMIT;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
