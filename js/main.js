@@ -256,6 +256,7 @@ function refreshChat(newestMsgs) {
 			// si on vient de saisir un message, on l'affiche APRES les derniers récupérés
 			if(newestMsgs) {
 				writeChatMessages(newestMsgs, true);
+				msgsToSendAfterRefresh = null;
 			}
 		},
 		error: function(resultat, statut, erreur) {
